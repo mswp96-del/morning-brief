@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오늘의 아침 브리핑 · 2026-07-16</title>
+<title>오늘의 아침 브리핑 · 2026-07-17</title>
 <style>
   :root{
     --bg:#f4f6fb; --card:#ffffff; --ink:#1c2431; --muted:#6b7688;
@@ -19,76 +19,51 @@
   .date{color:var(--muted);font-size:15px}
   .summary{margin:20px 0 28px;background:linear-gradient(135deg,#3b6ef5,#5a86ff);color:#fff;
     padding:18px 22px;border-radius:14px;font-size:18px;font-weight:700;box-shadow:0 8px 24px rgba(59,110,245,.25)}
-  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:18px;
-    box-shadow:0 1px 3px rgba(20,30,50,.04)}
-  .sec-title{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;letter-spacing:.06em;
-    text-transform:uppercase;color:var(--muted);margin:0 0 14px}
-  .sec-title .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
-  .item{padding:12px 0;border-top:1px solid var(--line)}
-  .item:first-of-type{border-top:none;padding-top:0}
-  .item .top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-  .item .name{font-weight:700}
-  .item .meta{color:var(--muted);font-size:14px}
-  .tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;margin-left:6px}
-  .tag.done{background:#e7f7ef;color:var(--good)}
-  .tag.skip{background:#eef1f6;color:var(--muted)}
-  .empty{color:var(--muted)}
-  .action{margin:8px 0;padding-left:4px}
-  footer{margin-top:28px;color:var(--muted);font-size:13px;text-align:center}
-  .clear-badge{color:var(--good);font-weight:700}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:18px}
+  h2{margin:0 0 14px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  .empty{color:var(--muted);font-size:15px;margin:4px 0}
+  .item{padding:11px 0;border-bottom:1px solid var(--line)}
+  .item:last-child{border-bottom:none}
+  .item .t{font-weight:600}
+  .item .s{color:var(--muted);font-size:14px}
+  .tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:10px;background:#eef2ff;color:var(--accent);margin-left:6px;vertical-align:middle}
+  footer{text-align:center;color:#9aa2b0;font-size:13px;margin-top:8px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div class="kicker">Morning Brief</div>
-    <h1>오늘의 아침 브리핑</h1>
-    <div class="date">2026년 7월 16일 목요일 · 생성 오후 6:52 KST</div>
+    <h1>☀️ 오늘의 아침 브리핑</h1>
+    <div class="date">2026년 7월 17일 (금) · 생성 06:31 KST</div>
   </header>
 
-  <div class="summary">남은 일정 0개 · 처리할 메일 0개 — 하루 일과 사실상 마무리 ✅</div>
+  <div class="summary">오늘은 일정이 없고, 처리가 필요한 중요 메일도 없습니다 — 여유로운 하루입니다.</div>
 
   <section>
-    <div class="sec-title"><span class="dot"></span>오늘의 일정</div>
+    <h2>📅 오늘의 일정</h2>
+    <p class="empty">오늘 등록된 일정이 없습니다. 하루가 비어 있습니다.</p>
+  </section>
+
+  <section>
+    <h2>✉️ 중요 안 읽은 메일</h2>
+    <p class="empty">답장이 필요한 중요 메일은 없습니다.</p>
     <div class="item">
-      <div class="top">
-        <span class="name">GPT 8시 <span class="tag done">종료됨</span></span>
-        <span class="meta">오후 4:00 – 5:00</span>
-      </div>
-      <div class="meta">유일한 오늘 일정이며 이미 끝났습니다.</div>
+      <div class="t">Google 캘린더<span class="tag">자동 알림</span></div>
+      <div class="s">'GPT 8시' 일정 알림 (7/16, 지난 일정) — 조치 불필요</div>
     </div>
     <div class="item">
-      <div class="empty">그 외 일정 없음 — 남은 하루는 비어 있습니다.</div>
+      <div class="t">Kahoot!<span class="tag">마케팅</span></div>
+      <div class="s">Kahoot!+ 홍보 메일 — 조치 불필요</div>
     </div>
   </section>
 
   <section>
-    <div class="sec-title"><span class="dot"></span>중요 안 읽은 메일</div>
-    <div class="item empty">답장이 필요한 실제 사람의 메일 없음. 안 읽은 메일 2건은 모두 무시 가능:</div>
-    <div class="item">
-      <div class="top">
-        <span class="name">Google Calendar <span class="tag skip">조치 불필요</span></span>
-      </div>
-      <div class="meta">"GPT 8시" 일정 자동 알림.</div>
-    </div>
-    <div class="item">
-      <div class="top">
-        <span class="name">Kahoot! <span class="tag skip">홍보성</span></span>
-      </div>
-      <div class="meta">"Save time on planning with Kahoot!+" 마케팅 메일.</div>
-    </div>
-    <div class="item meta">지난 7일간 실제 사람이 보낸 안 읽은 메일(홍보·소셜·자동알림 제외)은 없었습니다.</div>
+    <h2>✅ 오늘 챙길 것</h2>
+    <p class="empty">지금 시점에서 시급히 챙길 항목이 없습니다. 밀린 업무나 개인 정리에 집중하기 좋은 날입니다.</p>
   </section>
 
-  <section>
-    <div class="sec-title"><span class="dot"></span>오늘 처리할 일</div>
-    <div class="action"><span class="clear-badge">없음.</span> 준비할 회의도, 답장 대기 메일도, 캘린더·메일에 뜬 마감도 없습니다.</div>
-    <div class="action">저녁 시간 자유롭게 보내셔도 됩니다.</div>
-  </section>
-
-  <footer>
-    Google 캘린더 · Gmail 기준 · Slack/Notion 등 다른 연결은 확인하지 않음
-  </footer>
+  <footer>과학교사 M · 자동 생성 브리핑</footer>
 </div>
 </body>
 </html>
