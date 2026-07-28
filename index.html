@@ -1,98 +1,114 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오늘의 브리핑 · 2026-07-21</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>모닝 브리핑 · 2026-07-29</title>
 <style>
   * { box-sizing: border-box; }
-  body {
-    margin: 0; padding: 16px;
-    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
-    background: #f4f6f9; color: #1f2937; line-height: 1.6;
-  }
-  .wrap { max-width: 680px; margin: 0 auto; }
-  header {
-    background: linear-gradient(135deg, #2563eb, #1e40af);
-    color: #fff; border-radius: 14px; padding: 20px 18px; margin-bottom: 14px;
-  }
-  header h1 { margin: 0 0 6px; font-size: 20px; font-weight: 700; }
-  header .date { font-size: 14px; opacity: .9; }
-  .summary {
-    background: #fff; border-left: 5px solid #2563eb; border-radius: 10px;
-    padding: 14px 16px; margin-bottom: 16px; font-size: 15px; font-weight: 600;
-    box-shadow: 0 1px 3px rgba(0,0,0,.06);
-  }
-  .card {
-    background: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 14px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.06);
-  }
-  .card h2 {
-    margin: 0 0 12px; font-size: 15px; font-weight: 700; color: #1e40af;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .card h2 .num {
-    background: #dbeafe; color: #1e40af; width: 22px; height: 22px;
-    border-radius: 6px; display: inline-flex; align-items: center;
-    justify-content: center; font-size: 12px;
-  }
-  .item {
-    border-top: 1px solid #eef1f5; padding: 10px 0;
-  }
-  .item:first-of-type { border-top: none; padding-top: 0; }
-  .item .t { font-size: 13px; color: #2563eb; font-weight: 600; }
-  .item .title { font-size: 15px; font-weight: 600; margin: 2px 0; }
-  .item .meta { font-size: 13px; color: #6b7280; }
-  .empty {
-    color: #6b7280; font-size: 14px; background: #f9fafb;
-    border-radius: 8px; padding: 12px; text-align: center;
-  }
-  ol.actions { margin: 0; padding-left: 20px; }
-  ol.actions li { margin-bottom: 8px; font-size: 14px; }
-  .tag {
-    display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px;
-    background: #fef3c7; color: #92400e; margin-left: 6px; vertical-align: middle;
-  }
-  .tag.low { background: #e5e7eb; color: #4b5563; }
-  footer { text-align: center; font-size: 12px; color: #9ca3af; padding: 12px 0 24px; }
+  body { margin:0; padding:16px; background:#f4f6f9; color:#1c2431;
+         font-family:-apple-system,BlinkMacSystemFont,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+         line-height:1.6; }
+  .wrap { max-width:720px; margin:0 auto; }
+  header { padding:20px 4px 12px; }
+  header h1 { margin:0; font-size:22px; letter-spacing:-.4px; }
+  header .date { margin-top:4px; font-size:13px; color:#6b7787; }
+  .banner { background:#1f3a5f; color:#fff; border-radius:14px; padding:16px 18px;
+            font-size:16px; font-weight:600; margin-bottom:18px; }
+  .card { background:#fff; border-radius:14px; padding:18px; margin-bottom:14px;
+          box-shadow:0 1px 3px rgba(16,24,40,.08); }
+  .card h2 { margin:0 0 12px; font-size:15px; color:#1f3a5f; letter-spacing:-.2px;
+             border-bottom:1px solid #e8ecf2; padding-bottom:8px; }
+  .item { padding:10px 0; border-bottom:1px dashed #eef1f5; }
+  .item:last-child { border-bottom:none; padding-bottom:0; }
+  .t { font-size:12px; color:#8a94a4; font-variant-numeric:tabular-nums; }
+  .ttl { font-weight:600; font-size:15px; margin-top:2px; }
+  .sub { font-size:13px; color:#5b6778; margin-top:3px; }
+  .tag { display:inline-block; font-size:11px; padding:2px 8px; border-radius:99px;
+         margin-left:6px; vertical-align:middle; }
+  .tag-info { background:#e8f0fb; color:#25548f; }
+  .tag-warn { background:#fdf0e3; color:#95591a; }
+  .tag-ok   { background:#e7f5ec; color:#1f6b3d; }
+  ol.actions { margin:0; padding-left:20px; }
+  ol.actions li { padding:5px 0; font-size:14px; }
+  .muted { color:#8a94a4; font-size:13px; }
+  footer { text-align:center; font-size:11px; color:#9aa4b2; padding:18px 0 8px; }
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <header>
-    <h1>오늘의 브리핑</h1>
-    <div class="date">2026년 7월 21일 화요일 · 생성 08:00 KST</div>
+    <h1>오늘의 모닝 브리핑</h1>
+    <div class="date">2026년 7월 29일 (수) · 생성 08:33 KST · 여름방학 중</div>
   </header>
 
-  <div class="summary">일정 1건(종일), 확인이 필요한 안읽은 메일 없음 — 여유로운 하루입니다.</div>
+  <div class="banner">일정 3건(하루종일 2 + 저녁 1), 답장 필요한 메일 0건 — 여유로운 하루입니다.</div>
 
   <div class="card">
-    <h2><span class="num">1</span>오늘의 일정</h2>
+    <h2>1. 오늘의 일정</h2>
     <div class="item">
-      <div class="t">종일</div>
-      <div class="title">대청소</div>
-      <div class="meta">장소·화상링크 없음 · 참석자 없음(개인 일정) · 상태: 한가함(free)</div>
+      <div class="t">하루종일 · 7/23 ~ 8/17</div>
+      <div class="ttl">여름방학<span class="tag tag-ok">진행 중</span></div>
+      <div class="sub">방학 기간 중 7일차</div>
     </div>
-    <div class="meta" style="margin-top:10px;">시간 지정 일정이 없어 회의 충돌이나 연속 일정은 없습니다.</div>
+    <div class="item">
+      <div class="t">하루종일</div>
+      <div class="ttl">율마 물주기</div>
+      <div class="sub">어제 등록한 단발 일정 · 시간 지정 없음</div>
+    </div>
+    <div class="item">
+      <div class="t">08:00 – 09:00</div>
+      <div class="ttl">세금계산서 청구<span class="tag tag-warn">지금 시각</span></div>
+      <div class="sub">매년 반복 일정 · 브리핑 생성 시점(08:33)에 이미 진행 중</div>
+    </div>
+    <div class="item">
+      <div class="t">20:00 – 21:00</div>
+      <div class="ttl">소마</div>
+      <div class="sub">반복 일정 · 장소·참석자 정보 없음</div>
+    </div>
+    <div class="sub muted" style="margin-top:10px">시간 겹침이나 연속 회의는 없습니다. 낮 시간(09시~20시)은 완전히 비어 있습니다.</div>
   </div>
 
   <div class="card">
-    <h2><span class="num">2</span>중요 안읽은 메일</h2>
-    <div class="empty">최근 24시간(및 그 이전) 기준 안읽은 메일이 없습니다. 받은편지함이 비어 있습니다.</div>
+    <h2>2. 확인이 필요한 안읽은 메일</h2>
+    <div class="item">
+      <div class="ttl">사람이 직접 보낸 메일 · 답장 필요 건 없음<span class="tag tag-ok">양호</span></div>
+      <div class="sub">최근 3일 안읽은 메일 19건 중 나에게 직접 요청·질문·마감을 담은 메일은 없었습니다.</div>
+    </div>
+    <div class="item">
+      <div class="t">참고 · 보안 알림</div>
+      <div class="ttl">Claude 계정에 새 패스키 추가 (7/29 05:22)</div>
+      <div class="sub">같은 시각 Google 로그인 알림도 함께 도착. 본인이 한 작업이면 조치 불필요, 아니면 기기 확인 필요.</div>
+    </div>
+    <div class="item">
+      <div class="t">참고 · 보안 알림</div>
+      <div class="ttl">Genspark에 Google 계정 데이터 접근 허용 (7/28 16:56)</div>
+      <div class="sub">본인이 연동한 것이 맞는지만 확인하면 됩니다.</div>
+    </div>
+    <div class="item">
+      <div class="t">참고 · 자동 알림</div>
+      <div class="ttl">Google 클래스룸 「AI 문해력」 새 자료 10건 (6~15차시)</div>
+      <div class="sub">7/26 본인이 직접 게시한 자료의 자동 알림. 별도 조치 불필요.</div>
+    </div>
+    <div class="item">
+      <div class="t">참고 · 홍보성</div>
+      <div class="ttl">세인투 6기 안내, Kahoot!+ 프로모션, Higgsfield 약관 변경(8/27 시행)</div>
+      <div class="sub">모두 광고·공지성. 답장 불필요.</div>
+    </div>
   </div>
 
   <div class="card">
-    <h2><span class="num">3</span>오늘 챙길 일</h2>
+    <h2>3. 오늘 챙길 일</h2>
     <ol class="actions">
-      <li><strong>대청소 준비</strong> — 종일 일정이므로 시작 시각·담당 구역을 미리 확인해 두면 좋습니다.<span class="tag">유일한 확정 건</span></li>
-      <li><strong>답장 대기 메일 없음</strong> — 회신이 필요한 메일이 확인되지 않았습니다.<span class="tag low">조치 불필요</span></li>
-      <li><strong>여유 시간 활용</strong> — 회의가 없는 날이므로 미뤄둔 문서 작업이나 수업 자료 정리에 쓰기 좋습니다.<span class="tag low">선택</span></li>
+      <li><strong>세금계산서 청구</strong> — 08:00 일정이 이미 시작됨. 오전 중 처리 여부 확인.</li>
+      <li><strong>율마 물주기</strong> — 오늘 안에 하면 되는 일. 잊지 않도록.</li>
+      <li><strong>보안 알림 2건 눈으로 확인</strong> — Claude 패스키 추가·Genspark 연동이 본인작업인지만 체크.</li>
+      <li><strong>20:00 소마</strong> — 저녁 일정, 늦은 오후 이후 다른 약솅 잡지 안기.</li>
     </ol>
+    <div class="sub muted" style="margin-top:10px">오늘 마감인 외부 요청·회신 기한은 없습니다.</div>
   </div>
 
-  <footer>Google 캘린더 · Gmail 기준 자동 생성</footer>
-
+  <footer>Google 캘륰더 · Gmail 연동 데이터 기준 · 자동 생성</footer>
 </div>
 </body>
 </html>
