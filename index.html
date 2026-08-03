@@ -28,16 +28,15 @@
   .wrap{max-width:720px;margin:0 auto;padding:0 16px;}
   header{
     background:var(--navy);
-    color:#fff;
     padding:26px 0 24px;
     margin-bottom:20px;
   }
-  .kicker{
+  header .kicker{
     font-size:11px;letter-spacing:.22em;text-transform:uppercase;
     color:var(--gold);font-weight:700;margin:0 0 8px;
   }
-  h1{margin:0;font-size:27px;font-weight:700;letter-spacing:-.02em;}
-  .stamp{margin:8px 0 0;font-size:12.5px;color:#b9c3d4;}
+  header h1{margin:0;font-size:27px;font-weight:700;letter-spacing:-.02em;color:#ffffff;}
+  header .stamp{margin:8px 0 0;font-size:12.5px;color:#b9c3d4;}
   .summary{
     background:var(--card);
     border:1px solid var(--line);
@@ -84,7 +83,7 @@
   footer{margin-top:30px;font-size:12px;color:var(--muted);text-align:center;}
   strong{color:var(--navy);}
   @media (max-width:480px){
-    h1{font-size:23px;}
+    header h1{font-size:23px;}
     .time{min-width:100%;}
   }
 </style>
@@ -172,123 +171,5 @@
 
 </div>
 
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>오늘의 브리핑 · 2026-08-03</title>
-<style>
-  :root{
-    --navy:#1b2a4a; --gold:#b08d3f; --ivory:#faf7f0;
-    --ink:#22252b; --muted:#6b7280; --line:#e6e1d6; --card:#ffffff;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0; padding:0; background:var(--ivory); color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
-    line-height:1.6; -webkit-text-size-adjust:100%;
-  }
-  .wrap{max-width:720px; margin:0 auto; padding:20px 16px 56px;}
-  header{border-bottom:3px solid var(--gold); padding-bottom:14px; margin-bottom:18px;}
-  .eyebrow{font-size:12px; letter-spacing:.14em; color:var(--gold); font-weight:700; text-transform:uppercase;}
-  h1{margin:6px 0 4px; font-size:26px; color:var(--navy); letter-spacing:-.02em;}
-  .gen{font-size:12.5px; color:var(--muted);}
-  .banner{
-    background:var(--navy); color:#fff; border-radius:12px; padding:14px 16px;
-    font-size:15.5px; font-weight:600; margin:16px 0 22px;
-  }
-  .banner span{color:#e9c877;}
-  section{margin-bottom:26px;}
-  h2{
-    font-size:15px; color:var(--navy); margin:0 0 10px; padding-left:10px;
-    border-left:4px solid var(--gold); letter-spacing:-.01em;
-  }
-  .card{
-    background:var(--card); border:1px solid var(--line); border-radius:12px;
-    padding:13px 15px; margin-bottom:9px; box-shadow:0 1px 2px rgba(27,42,74,.05);
-  }
-  .card .t{font-weight:700; font-size:15px; color:var(--navy); margin-bottom:3px;}
-  .card .m{font-size:13px; color:var(--muted);}
-  .time{
-    display:inline-block; font-size:12px; font-weight:700; color:#fff;
-    background:var(--gold); border-radius:5px; padding:1px 8px; margin-right:7px;
-    vertical-align:1px;
-  }
-  .time.allday{background:#8a94a6;}
-  ol.actions{margin:0; padding-left:0; list-style:none; counter-reset:a;}
-  ol.actions li{
-    counter-increment:a; background:var(--card); border:1px solid var(--line);
-    border-radius:12px; padding:12px 15px 12px 44px; margin-bottom:9px; position:relative;
-    font-size:14.5px;
-  }
-  ol.actions li::before{
-    content:counter(a); position:absolute; left:14px; top:12px;
-    width:20px; height:20px; border-radius:50%; background:var(--navy); color:#fff;
-    font-size:12px; font-weight:700; text-align:center; line-height:20px;
-  }
-  .note{font-size:13px; color:var(--muted); background:#f2eee4; border-radius:10px; padding:11px 14px;}
-  footer{margin-top:34px; padding-top:14px; border-top:1px solid var(--line); font-size:12px; color:var(--muted); text-align:center;}
-</style>
-</head>
-<body>
-<div class="wrap">
-
-  <header>
-    <div class="eyebrow">Morning Brief</div>
-    <h1>2026년 8월 3일 (월)</h1>
-    <div class="gen">생성 시각 · 2026-08-03 06:32 KST · Google 캘린더 + Gmail</div>
-  </header>
-
-  <div class="banner">일정 <span>3건</span> · 답장 필요한 메일 <span>0건</span> — 방학 중 여유로운 하루</div>
-
-  <section>
-    <h2>오늘의 일정</h2>
-    <div class="card">
-      <div class="t"><span class="time">08:00–09:00</span>소마</div>
-      <div class="m">반복 일정 · 장소·참석자 정보 없음</div>
-    </div>
-    <div class="card">
-      <div class="t"><span class="time">12:00</span>한양코다리 점심 약속</div>
-      <div class="m">종일 일정으로 등록됨(제목에 12시 명시) · 한가함 표시</div>
-    </div>
-    <div class="card">
-      <div class="t"><span class="time allday">종일</span>과학실 세미나</div>
-      <div class="m">시각 미지정 · 한가함 표시 · 점심 약속과 시간 겹칠 수 있음</div>
-    </div>
-    <div class="card">
-      <div class="t"><span class="time allday">기간</span>여름방학 (7/23–8/17)</div>
-      <div class="m">진행 중</div>
-    </div>
-    <div class="note">충돌 없음. 다만 <b>과학실 세미나</b>에 시각이 없어 12시 점심과 겹칠 수 있으니 시간 확인이 필요합니다.</div>
-  </section>
-
-  <section>
-    <h2>중요 안읽은 메일</h2>
-    <div class="note">
-      답장이 필요한 사람 발신 메일은 없습니다.<br><br>
-      최근 24시간 안읽은 메일 15건은 모두 자동 알림입니다 —
-      Google 클래스룸 「26 과학실 2학년」 새 자료 등록 알림 14건(611 영양소 ~ 732 자기장 속에서 코일이 받는 힘, 8/2 저녁 본인 게시분),
-      그리고 자료 구매 완료 안내 메일 1건.<br><br>
-      필터를 넓혀 사람이 보낸 안읽은 메일을 다시 검색했으나 결과 없음.
-    </div>
-  </section>
-
-  <section>
-    <h2>오늘 챙길 일</h2>
-    <ol class="actions">
-      <li><b>과학실 세미나 시각 확인</b> — 12시 점심과 겹치는지 먼저 확인하고 캘린더에 시간을 넣어 두기.</li>
-      <li><b>08:00 소마</b> — 가장 이른 일정. 브리핑 확인 직후 바로 준비.</li>
-      <li><b>클래스룸 자료 점검</b> — 어제 올린 2학년 자료 14건이 정상 게시됐는지, 번호 누락(613 다음 621 등)이 의도된 것인지 한 번 훑어보기.</li>
-      <li><b>메일함 정리</b> — 클래스룸 알림 14건 일괄 읽음 처리하면 받은편지함이 깔끔해집니다.</li>
-    </ol>
-    <div class="note">마감이 걸린 항목이나 오늘까지 회신해야 할 요청은 없습니다.</div>
-  </section>
-
-  <footer>자동 생성 · Google 캘린더 · Gmail 기준</footer>
-
-</div>
 </body>
 </html>
