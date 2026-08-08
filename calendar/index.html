@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이번 달 한눈에 보기</title>
+<style>
+  :root{
+    --navy:#12203a; --navy-2:#1b2e4f; --ink:#0d1626;
+    --gold:#b98b3c; --gold-soft:#e2c68a;
+    --paper:#ffffff; --line:#e3ddd1; --muted:#6b7280; --today:#8b3a2f; --hol:#a8342a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Pretendard','Noto Sans KR','Malgun Gothic',system-ui,sans-serif;
+    background:linear-gradient(170deg,#f9f7f2 0%,#efece4 100%);
+    color:var(--ink);padding:26px 20px 46px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1240px;margin:0 auto}
+
+  header{
+    display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
+    gap:16px;padding-bottom:16px;margin-bottom:18px;border-bottom:2px solid var(--navy);
+  }
+  h1{font-family:'Noto Serif KR','Nanum Myeongjo',Georgia,serif;font-size:29px;font-weight:700;color:var(--navy);letter-spacing:-.5px}
+  .range{margin-top:6px;font-size:13.5px;color:var(--muted);letter-spacing:.3px}
+  .head-right{display:flex;align-items:center;gap:13px}
+  .clock{text-align:right;font-variant-numeric:tabular-nums}
+  .clock .t{font-family:'Noto Serif KR','Nanum Myeongjo',Georgia,serif;font-size:25px;color:var(--navy);font-weight:700}
+  .clock .d{font-size:12px;color:var(--muted);margin-top:3px}
+
+  .refresh{
+    display:flex;align-items:center;gap:7px;background:var(--navy);color:#fff;border:none;cursor:pointer;
+    font-family:inherit;font-size:13px;font-weight:500;padding:10px 15px;border-radius:9px;
+    box-shadow:0 3px 10px rgba(18,32,58,.20);transition:background .15s,transform .12s;
+  }
+  .refresh:hover{background:#20375d}
+  .refresh:active{transform:scale(.96)}
+  .refresh svg{width:15px;height:15px;fill:none;stroke:var(--gold-soft);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .refresh.spin svg{animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .banner{
+    display:flex;align-items:center;gap:12px;
+    background:linear-gradient(100deg,var(--navy) 0%,var(--navy-2) 100%);
+    color:#fff;border-radius:12px;padding:14px 20px;margin-bottom:13px;
+    box-shadow:0 6px 18px rgba(18,32,58,.16);
+  }
+  .banner .dot{width:8px;height:8px;border-radius:50%;background:var(--gold-soft);flex:none;box-shadow:0 0 0 4px rgba(226,198,138,.22)}
+  .banner b{font-weight:700;color:var(--gold-soft)}
+  .banner span{font-size:14px;opacity:.94}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+  .stat{background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:13px 16px}
+  .stat .k{font-size:11.5px;color:var(--muted);letter-spacing:.4px}
+  .stat .v{font-family:'Noto Serif KR','Nanum Myeongjo',Georgia,serif;font-size:21px;color:var(--navy);font-weight:700;margin-top:3px}
+  .stat .v small{font-size:12px;font-weight:400;color:var(--muted);font-family:inherit}
+
+  .dowbar{display:grid;grid-template-columns:repeat(7,1fr);gap:9px;margin-bottom:9px}
+  .dowbar div{
+    text-align:center;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--muted);
+    padding:7px 0;border-bottom:1px solid var(--line);
+  }
+  .dowbar div.sat{color:#2b4a7e}
+  .dowbar div.sun{color:var(--hol)}
+
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:9px}
+  .day{
+    background:var(--paper);border:1px solid var(--line);border-radius:11px;
+    display:flex;flex-direction:column;min-height:118px;overflow:hidden;
+    transition:transform .15s,box-shadow .15s;
+  }
+  .day:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(18,32,58,.10)}
+  .day.ghost{background:transparent;border-color:transparent;box-shadow:none;pointer-events:none}
+  .day.today{border-color:var(--today);box-shadow:0 0 0 2px rgba(139,58,47,.16),0 8px 20px rgba(139,58,47,.12)}
+  .day.past{opacity:.58}
+  .day.weekend{background:#fbf9f4}
+  .dh{padding:8px 10px 6px;display:flex;align-items:baseline;justify-content:space-between;gap:5px}
+  .day.today .dh{background:var(--today)}
+  .day.today .num,.day.today .hname{color:#fff}
+  .day.today .badge{background:rgba(255,255,255,.92);color:var(--today)}
+  .num{font-family:'Noto Serif KR','Nanum Myeongjo',Georgia,serif;font-size:17px;font-weight:700;color:var(--navy)}
+  .day.sun .num,.day.hol .num{color:var(--hol)}
+  .day.sat .num{color:#2b4a7e}
+  .hname{font-size:10.5px;color:var(--hol);font-weight:600;letter-spacing:.2px;text-align:right;line-height:1.3}
+  .badge{font-size:9.5px;background:var(--navy);color:#fff;padding:2px 7px;border-radius:20px;letter-spacing:.5px;flex:none}
+
+  .span-chip{
+    margin:0 6px 4px;font-size:10px;color:var(--navy-2);background:#eef1f6;
+    border-left:2px solid var(--navy-2);padding:2.5px 6px;border-radius:0 5px 5px 0;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .events{padding:2px 6px 8px;display:flex;flex-direction:column;gap:4px;flex:1}
+  .ev{border-left:2.5px solid var(--gold);background:#faf7f1;border-radius:0 6px 6px 0;padding:4px 7px;line-height:1.3}
+  .ev.allday{border-left-color:var(--navy-2);background:#f2f4f8}
+  .ev .time{font-size:9.5px;color:var(--gold);font-weight:700;letter-spacing:.3px;font-variant-numeric:tabular-nums}
+  .ev.allday .time{color:var(--navy-2)}
+  .ev .name{font-size:11.5px;font-weight:500;color:var(--ink);margin-top:1px;overflow:hidden;text-overflow:ellipsis}
+  .ev.done{opacity:.5}
+  .ev.now{border-left-color:var(--today);background:#fdf1ee;animation:pulse 2.4s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(139,58,47,.22)}50%{box-shadow:0 0 0 4px rgba(139,58,47,0)}}
+  .new-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--gold);margin-left:4px;vertical-align:middle}
+
+  footer{margin-top:24px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.8}
+  footer .sync{color:var(--navy);font-weight:500}
+
+  @media(max-width:900px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .dowbar div{letter-spacing:0}
+    .num{font-size:15px}
+    .ev .name{font-size:10.5px}
+  }
+  @media(max-width:600px){
+    body{padding:16px 8px 36px}
+    .grid,.dowbar{gap:4px}
+    .day{min-height:86px;border-radius:8px}
+    .dh{padding:5px 6px 3px}
+    .events{padding:1px 3px 5px;gap:2.5px}
+    .ev{padding:3px 5px}
+    .ev .time{font-size:8.5px}
+    .ev .name{font-size:9.5px;white-space:nowrap}
+    .span-chip{margin:0 3px 3px;font-size:8.5px}
+    .hname{display:none}
+    header{flex-direction:column;align-items:flex-start}
+    .clock{text-align:left}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <h1 id="title">이번 달 한눈에 보기</h1>
+      <div class="range" id="range">—</div>
+    </div>
+    <div class="head-right">
+      <button class="refresh" id="btn-refresh" title="최신 갱신본을 다시 불러옵니다 (단축키 R)">
+        <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+        <span>새로고침</span>
+      </button>
+      <div class="clock">
+        <div class="t" id="clock">--:--:--</div>
+        <div class="d" id="today-label">—</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="banner">
+    <div class="dot"></div>
+    <span id="next-line">—</span>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="k">이번 달 일정</div><div class="v" id="s-total">—</div></div>
+    <div class="stat"><div class="k">남은 일정</div><div class="v" id="s-left">—</div></div>
+    <div class="stat"><div class="k">가장 바쁜 날</div><div class="v" id="s-busy">—</div></div>
+    <div class="stat"><div class="k">공휴일</div><div class="v" id="s-hol">—</div></div>
+  </div>
+
+  <div class="dowbar">
+    <div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div class="sat">토</div><div class="sun">일</div>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    <div>Google 캘린더 통합 · 마지막 갱신 <span class="sync" id="last-sync">—</span></div>
+    <div>매일 아침 클라우드에서 자동으로 다시 읽어옵니다. 방금 넣은 일정을 바로 보려면 대화창에 "월간 캘린더 갱신"이라고 적어 주세요.</div>
+  </footer>
+</div>
+
+<script>
+/* ════════ 캘린더 데이터 (자동 갱신 영역 시작) ════════ */
+const SYNCED_AT = "2026-08-08 11:10";
+const MONTH = "2026-08";
+const SPANS = [
+  {name:"여름방학", from:"2026-07-23", to:"2026-08-17"}
+];
+const HOLIDAYS = [
+  {date:"2026-08-15", name:"광복절"},
+  {date:"2026-08-17", name:"쉬는 날 (광복절 대체)"}
+];
+const DAYS = [
+  {date:"2026-08-01", events:[
+    {name:"한의원 2시", allday:true},
+    {name:"필라테스", t0:"10:00", t1:"11:00"}
+  ]},
+  {date:"2026-08-02", events:[
+    {name:"갈라짐", allday:true}
+  ]},
+  {date:"2026-08-03", events:[
+    {name:"12시 한양코다리 점심 약속", allday:true},
+    {name:"과학실 세미나", allday:true},
+    {name:"소마", t0:"08:00", t1:"09:00"}
+  ]},
+  {date:"2026-08-04", events:[
+    {name:"진로교데통 이음톡 전송", allday:true},
+    {name:"필라테스", t0:"10:30", t1:"11:30"},
+    {name:"자궁암 검사", t0:"16:00", t1:"17:00"}
+  ]},
+  {date:"2026-08-05", events:[
+    {name:"학교 과학세미나", t0:"09:30", t1:"10:30"},
+    {name:"소마", t0:"20:00", t1:"21:00"}
+  ]},
+  {date:"2026-08-06", events:[
+    {name:"필라테스", t0:"09:30", t1:"10:30"},
+    {name:"건강검진예약", t0:"13:00", t1:"14:00"},
+    {name:"GPT 8시", t0:"20:00", t1:"21:00"}
+  ]},
+  {date:"2026-08-07", events:[
+    {name:"123", t0:"03:00", t1:"04:00"}
+  ]},
+  {date:"2026-08-08", events:[
+    {name:"세종대학교 김주은2", allday:true},
+    {name:"5시 가평 장례식장 출발", t0:"16:30", t1:"17:30"}
+  ]},
+  {date:"2026-08-09", events:[
+    {name:"갈라짐", t0:"09:30", t1:"10:00"},
+    {name:"한의원 11시 20분", t0:"11:00", t1:"12:00"}
+  ]},
+  {date:"2026-08-10", events:[
+    {name:"과학세미나", allday:true},
+    {name:"소마", t0:"08:00", t1:"09:00"}
+  ]},
+  {date:"2026-08-11", events:[
+    {name:"필라테스", t0:"19:30", t1:"20:30"}
+  ]},
+  {date:"2026-08-12", events:[
+    {name:"과학세미나", t0:"09:30", t1:"10:30"},
+    {name:"소마", t0:"20:00", t1:"21:00"}
+  ]},
+  {date:"2026-08-13", events:[
+    {name:"필라테스", t0:"09:30", t1:"10:30"},
+    {name:"GPT 8시", t0:"16:00", t1:"17:00"}
+  ]},
+  {date:"2026-08-14", events:[
+    {name:"ETF", allday:true},
+    {name:"생일", allday:true}
+  ]},
+  {date:"2026-08-15", events:[
+    {name:"한의원 2시", allday:true},
+    {name:"필라테스", t0:"10:00", t1:"11:00"}
+  ]},
+  {date:"2026-08-16", events:[
+    {name:"갈라짐", allday:true}
+  ]},
+  {date:"2026-08-17", events:[
+    {name:"소마", t0:"08:00", t1:"09:00"}
+  ]},
+  {date:"2026-08-18", events:[
+    {name:"필라테스", t0:"19:30", t1:"20:30"}
+  ]},
+  {date:"2026-08-19", events:[
+    {name:"2학기 개학식", allday:true},
+    {name:"소마", t0:"20:00", t1:"21:00"}
+  ]},
+  {date:"2026-08-20", events:[
+    {name:"GPT 8시", t0:"16:00", t1:"17:00"}
+  ]},
+  {date:"2026-08-22", events:[
+    {name:"한의원 2시", allday:true},
+    {name:"필라테스", t0:"10:00", t1:"11:00"}
+  ]},
+  {date:"2026-08-23", events:[
+    {name:"갈라짐", allday:true}
+  ]},
+  {date:"2026-08-24", events:[
+    {name:"소마", t0:"08:00", t1:"09:00"}
+  ]},
+  {date:"2026-08-26", events:[
+    {name:"소마", t0:"20:00", t1:"21:00"}
+  ]},
+  {date:"2026-08-27", events:[
+    {name:"GPT 8시", t0:"16:00", t1:"17:00"}
+  ]},
+  {date:"2026-08-29", events:[
+    {name:"한의원 2시", allday:true},
+    {name:"세금계산서 청구", t0:"08:00", t1:"09:00"},
+    {name:"필라테스", t0:"10:00", t1:"11:00"}
+  ]},
+  {date:"2026-08-30", events:[
+    {name:"갈라짐", allday:true}
+  ]},
+  {date:"2026-08-31", events:[
+    {name:"소마", t0:"08:00", t1:"09:00"}
+  ]}
+];
+/* ════════ 캘린더 데이터 (자동 갱신 영역 끝) ════════ */
+
+const DOW_KR = ["일","월","화","수","목","금","토"];
+
+function seoulNow(){ return new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Seoul"})); }
+function mins(t){ const [h,m]=t.split(":").map(Number); return h*60+m; }
+function pad(n){ return String(n).padStart(2,"0"); }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+const DAY_MAP = {};
+DAYS.forEach(d=>DAY_MAP[d.date]=d.events);
+const HOL_MAP = {};
+HOLIDAYS.forEach(h=>HOL_MAP[h.date]=h.name);
+
+function render(){
+  const now = seoulNow();
+  const [Y,M] = MONTH.split("-").map(Number);
+  const todayKey = now.getFullYear()+"-"+pad(now.getMonth()+1)+"-"+pad(now.getDate());
+  const nowMin = now.getHours()*60 + now.getMinutes();
+
+  document.getElementById("clock").textContent = pad(now.getHours())+":"+pad(now.getMinutes())+":"+pad(now.getSeconds());
+  document.getElementById("today-label").textContent = (now.getMonth()+1)+"월 "+now.getDate()+"일 · 서울";
+  document.getElementById("last-sync").textContent = SYNCED_AT;
+  document.getElementById("title").textContent = M+"월 한눈에 보기";
+
+  const lastDay = new Date(Y, M, 0).getDate();
+  document.getElementById("range").textContent =
+    Y+"년 "+M+"월 1일 — "+M+"월 "+lastDay+"일"
+    + (SPANS.length ? " · "+SPANS.map(s=>s.name).join(", ") : "");
+
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
+
+  const firstDow = new Date(Y, M-1, 1).getDay();       // 0=일
+  const lead = (firstDow + 6) % 7;                     // 월요일 시작 그리드의 앞 빈칸
+  for(let i=0;i<lead;i++){
+    const g = document.createElement("div");
+    g.className = "day ghost";
+    grid.appendChild(g);
+  }
+
+  let total=0, left=0, busiest=null, nextEv=null;
+
+  for(let d=1; d<=lastDay; d++){
+    const key = MONTH+"-"+pad(d);
+    const dow = new Date(Y, M-1, d).getDay();
+    const events = DAY_MAP[key] || [];
+    const hol = HOL_MAP[key];
+    const isToday = key === todayKey;
+    const isPast  = key < todayKey;
+
+    const el = document.createElement("div");
+    el.className = "day"
+      + (isToday?" today":"") + (isPast?" past":"")
+      + (dow===0?" sun":"") + (dow===6?" sat":"")
+      + ((dow===0||dow===6)?" weekend":"") + (hol?" hol":"");
+
+    let html = '<div class="dh"><span class="num">'+d+'</span>'
+             + (isToday ? '<span class="badge">오늘</span>' : (hol ? '<span class="hname">'+esc(hol)+'</span>' : ''))
+             + '</div>';
+    if(isToday && hol) html += '<div class="span-chip" style="border-left-color:var(--hol);color:var(--hol);background:#faeeec">'+esc(hol)+'</div>';
+
+    SPANS.filter(s=>key>=s.from && key<=s.to).forEach(s=>{
+      html += '<div class="span-chip">'+esc(s.name)+'</div>';
+    });
+
+    html += '<div class="events">';
+    const allday = events.filter(e=>e.allday);
+    const timed  = events.filter(e=>!e.allday).slice().sort((a,b)=>mins(a.t0)-mins(b.t0));
+
+    allday.forEach(e=>{
+      total++; if(!isPast) left++;
+      html += '<div class="ev allday'+(isPast?' done':'')+'"><div class="time">종일</div>'
+            + '<div class="name">'+esc(e.name)+(e.isNew?'<span class="new-dot"></span>':'')+'</div></div>';
+    });
+    timed.forEach(e=>{
+      total++;
+      let cls = "";
+      if(isPast) cls = " done";
+      else if(isToday){
+        if(nowMin >= mins(e.t1)) cls = " done";
+        else if(nowMin >= mins(e.t0)) cls = " now";
+      }
+      if(cls !== " done") left++;
+      if(!nextEv && (key > todayKey || (isToday && nowMin < mins(e.t0)))) nextEv = {key, dow, e};
+      html += '<div class="ev'+cls+'"><div class="time">'+e.t0+' – '+e.t1+'</div>'
+            + '<div class="name">'+esc(e.name)+(e.isNew?'<span class="new-dot"></span>':'')+'</div></div>';
+    });
+    html += '</div>';
+
+    el.innerHTML = html;
+    grid.appendChild(el);
+    if(!busiest || events.length > busiest.n) busiest = {key, dow, n:events.length};
+  }
+
+  document.getElementById("s-total").innerHTML = total+'<small> 건</small>';
+  document.getElementById("s-left").innerHTML  = left+'<small> 건</small>';
+  document.getElementById("s-busy").innerHTML  = busiest && busiest.n
+    ? Number(busiest.key.slice(8,10))+'일 <small>'+DOW_KR[busiest.dow]+' · '+busiest.n+'건</small>' : "—";
+  document.getElementById("s-hol").innerHTML   = HOLIDAYS.length
+    ? HOLIDAYS.map(h=>Number(h.date.slice(8,10))+'일').join(" · ")+'<small> '+HOLIDAYS.length+'일</small>' : "없음";
+
+  const line = document.getElementById("next-line");
+  if(nextEv){
+    const isToday = nextEv.key === todayKey;
+    const when = isToday ? "오늘" : (Number(nextEv.key.slice(8,10))+"일 "+DOW_KR[nextEv.dow]+"요일");
+    let extra = "";
+    if(isToday){
+      const diff = mins(nextEv.e.t0) - nowMin;
+      extra = " · <b>"+Math.floor(diff/60)+"시간 "+(diff%60)+"분 뒤</b>";
+    }
+    line.innerHTML = "다음 일정 — <b>"+esc(nextEv.e.name)+"</b> · "+when+" "+nextEv.e.t0+extra;
+  }else{
+    line.innerHTML = "이번 달 남은 시간 일정이 없습니다."
+      + (SPANS.length ? " <b>"+esc(SPANS[0].name)+"</b> 기간이 이어집니다." : "");
+  }
+}
+
+const btn = document.getElementById("btn-refresh");
+btn.addEventListener("click", ()=>{
+  btn.classList.add("spin");
+  setTimeout(()=>location.reload(), 400);
+});
+document.addEventListener("keydown", e=>{
+  if((e.key==="r"||e.key==="R") && !e.metaKey && !e.ctrlKey && !e.altKey) btn.click();
+});
+
+render();
+setInterval(render, 1000);
+</script>
+</body>
+</html>
