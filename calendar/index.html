@@ -103,6 +103,19 @@
 
   footer{margin-top:24px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.8}
   footer .sync{color:var(--navy);font-weight:500}
+  .live-tag{
+    display:inline-block;margin-left:6px;font-size:10px;font-weight:700;letter-spacing:.5px;
+    color:#1c6b42;background:#e3f2e9;border:1px solid #bfe0cd;padding:1px 7px;border-radius:20px;vertical-align:1px;
+  }
+
+  .toast{
+    position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);
+    background:var(--navy);color:#fff;font-size:13px;padding:11px 20px;border-radius:24px;
+    box-shadow:0 8px 24px rgba(18,32,58,.28);opacity:0;pointer-events:none;
+    transition:opacity .25s,transform .25s;z-index:50;max-width:82vw;text-align:center;
+  }
+  .toast.on{opacity:1;transform:translate(-50%,0)}
+  .toast b{color:var(--gold-soft)}
 
   @media(max-width:900px){
     .stats{grid-template-columns:repeat(2,1fr)}
@@ -164,9 +177,11 @@
   <div class="grid" id="grid"></div>
 
   <footer>
-    <div>Google 캘린더 통합 · 마지막 갱신 <span class="sync" id="last-sync">—</span></div>
-    <div>매일 아침 클라우드에서 자동으로 다시 읽어옵니다. 방금 넣은 일정을 바로 보려면 대화창에 "월간 캘린더 갱신"이라고 적어 주세요.</div>
+    <div>Google 캘린더 통합 · 마지막 갱신 <span class="sync" id="last-sync">—</span><span class="live-tag" id="live-tag" style="display:none">실시간</span></div>
+    <div>매일 아침 클라우드에 자동 저장되고, 새로고침(단축키 R)을 누르면 구글 캘린더에서 실시간으로 다시 읽어옵니다.</div>
   </footer>
+
+  <div class="toast" id="toast"></div>
 </div>
 
 <script>
@@ -287,6 +302,9 @@ const DAYS = [
 ];
 /* ════════ 캘린더 데이터 (자동 갱신 영역 끝) ════════ */
 
+/* 실시간 조회용 Apps Script 웹 앱 URL (/exec). 비워 두면 새로고침은 저장본만 다시 불러옵니다. */
+const LIVE_URL = "";
+
 const DOW_KR = ["일","월","화","수","목","금","토"];
 
 function seoulNow(){ return new Date(new Date().toLocaleString("en-US",{timeZone:"Asia/Seoul"})); }
@@ -294,26 +312,30 @@ function mins(t){ const [h,m]=t.split(":").map(Number); return h*60+m; }
 function pad(n){ return String(n).padStart(2,"0"); }
 function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 
-const DAY_MAP = {};
-DAYS.forEach(d=>DAY_MAP[d.date]=d.events);
-const HOL_MAP = {};
-HOLIDAYS.forEach(h=>HOL_MAP[h.date]=h.name);
+let DATA = {month:MONTH, spans:SPANS, holidays:HOLIDAYS, days:DAYS, synced:SYNCED_AT, live:false};
+let DAY_MAP = {}, HOL_MAP = {};
+function applyData(){
+  DAY_MAP = {}; DATA.days.forEach(d=>DAY_MAP[d.date]=d.events);
+  HOL_MAP = {}; DATA.holidays.forEach(h=>HOL_MAP[h.date]=h.name);
+}
+applyData();
 
 function render(){
   const now = seoulNow();
-  const [Y,M] = MONTH.split("-").map(Number);
+  const [Y,M] = DATA.month.split("-").map(Number);
   const todayKey = now.getFullYear()+"-"+pad(now.getMonth()+1)+"-"+pad(now.getDate());
   const nowMin = now.getHours()*60 + now.getMinutes();
 
   document.getElementById("clock").textContent = pad(now.getHours())+":"+pad(now.getMinutes())+":"+pad(now.getSeconds());
   document.getElementById("today-label").textContent = (now.getMonth()+1)+"월 "+now.getDate()+"일 · 서울";
-  document.getElementById("last-sync").textContent = SYNCED_AT;
+  document.getElementById("last-sync").textContent = DATA.synced;
+  document.getElementById("live-tag").style.display = DATA.live ? "" : "none";
   document.getElementById("title").textContent = M+"월 한눈에 보기";
 
   const lastDay = new Date(Y, M, 0).getDate();
   document.getElementById("range").textContent =
     Y+"년 "+M+"월 1일 — "+M+"월 "+lastDay+"일"
-    + (SPANS.length ? " · "+SPANS.map(s=>s.name).join(", ") : "");
+    + (DATA.spans.length ? " · "+DATA.spans.map(s=>s.name).join(", ") : "");
 
   const grid = document.getElementById("grid");
   grid.innerHTML = "";
@@ -329,7 +351,7 @@ function render(){
   let total=0, left=0, busiest=null, nextEv=null;
 
   for(let d=1; d<=lastDay; d++){
-    const key = MONTH+"-"+pad(d);
+    const key = DATA.month+"-"+pad(d);
     const dow = new Date(Y, M-1, d).getDay();
     const events = DAY_MAP[key] || [];
     const hol = HOL_MAP[key];
@@ -347,7 +369,7 @@ function render(){
              + '</div>';
     if(isToday && hol) html += '<div class="span-chip" style="border-left-color:var(--hol);color:var(--hol);background:#faeeec">'+esc(hol)+'</div>';
 
-    SPANS.filter(s=>key>=s.from && key<=s.to).forEach(s=>{
+    DATA.spans.filter(s=>key>=s.from && key<=s.to).forEach(s=>{
       html += '<div class="span-chip">'+esc(s.name)+'</div>';
     });
 
@@ -384,8 +406,8 @@ function render(){
   document.getElementById("s-left").innerHTML  = left+'<small> 건</small>';
   document.getElementById("s-busy").innerHTML  = busiest && busiest.n
     ? Number(busiest.key.slice(8,10))+'일 <small>'+DOW_KR[busiest.dow]+' · '+busiest.n+'건</small>' : "—";
-  document.getElementById("s-hol").innerHTML   = HOLIDAYS.length
-    ? HOLIDAYS.map(h=>Number(h.date.slice(8,10))+'일').join(" · ")+'<small> '+HOLIDAYS.length+'일</small>' : "없음";
+  document.getElementById("s-hol").innerHTML   = DATA.holidays.length
+    ? DATA.holidays.map(h=>Number(h.date.slice(8,10))+'일').join(" · ")+'<small> '+DATA.holidays.length+'일</small>' : "없음";
 
   const line = document.getElementById("next-line");
   if(nextEv){
@@ -399,14 +421,58 @@ function render(){
     line.innerHTML = "다음 일정 — <b>"+esc(nextEv.e.name)+"</b> · "+when+" "+nextEv.e.t0+extra;
   }else{
     line.innerHTML = "이번 달 남은 시간 일정이 없습니다."
-      + (SPANS.length ? " <b>"+esc(SPANS[0].name)+"</b> 기간이 이어집니다." : "");
+      + (DATA.spans.length ? " <b>"+esc(DATA.spans[0].name)+"</b> 기간이 이어집니다." : "");
   }
 }
 
+function showToast(html){
+  const t = document.getElementById("toast");
+  t.innerHTML = html; t.classList.add("on");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=>t.classList.remove("on"), 2800);
+}
+
+/* 실시간 조회: Apps Script 웹 앱을 JSONP로 호출 (어느 컴퓨터에서든 동작) */
+function fetchLive(){
+  return new Promise((resolve, reject)=>{
+    if(!LIVE_URL){ reject("no-url"); return; }
+    const now = seoulNow();
+    const ym = now.getFullYear()+"-"+pad(now.getMonth()+1);
+    const cb = "__calLive" + Date.now();
+    const s = document.createElement("script");
+    let done = false;
+    const cleanup = ()=>{ delete window[cb]; s.remove(); };
+    window[cb] = d=>{ done = true; cleanup(); resolve(d); };
+    s.onerror = ()=>{ if(!done){ cleanup(); reject("load-error"); } };
+    setTimeout(()=>{ if(!done){ cleanup(); reject("timeout"); } }, 15000);
+    s.src = LIVE_URL + (LIVE_URL.includes("?") ? "&" : "?") + "month=" + ym + "&callback=" + cb;
+    document.body.appendChild(s);
+  }).then(d=>{
+    if(!d || !d.month) throw "bad-data";
+    DATA = {month:d.month, spans:d.spans||[], holidays:d.holidays||[], days:d.days||[], synced:d.syncedAt||DATA.synced, live:true};
+    applyData();
+    render();
+    return d;
+  });
+}
+
 const btn = document.getElementById("btn-refresh");
+let busy = false;
 btn.addEventListener("click", ()=>{
+  if(busy) return;
+  busy = true;
   btn.classList.add("spin");
-  setTimeout(()=>location.reload(), 400);
+  fetchLive()
+    .then(()=>showToast("구글 캘린더에서 <b>실시간</b>으로 불러왔습니다"))
+    .catch(err=>{
+      if(err === "no-url"){
+        showToast("최신 저장본을 다시 불러옵니다…");
+        setTimeout(()=>location.reload(), 450);
+      }else{
+        showToast("실시간 연결에 실패해 <b>마지막 저장본</b>을 보여 줍니다");
+      }
+    })
+    .finally(()=>{ busy = false; setTimeout(()=>btn.classList.remove("spin"), 500); });
 });
 document.addEventListener("keydown", e=>{
   if((e.key==="r"||e.key==="R") && !e.metaKey && !e.ctrlKey && !e.altKey) btn.click();
@@ -414,6 +480,8 @@ document.addEventListener("keydown", e=>{
 
 render();
 setInterval(render, 1000);
+/* 페이지를 열 때도 조용히 실시간 데이터로 갱신 */
+fetchLive().catch(()=>{});
 </script>
 </body>
 </html>
