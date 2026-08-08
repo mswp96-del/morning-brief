@@ -186,14 +186,14 @@
 
 <script>
 /* ════════ 캘린더 데이터 (자동 갱신 영역 시작) ════════ */
-const SYNCED_AT = "2026-08-08 11:10";
+const SYNCED_AT = "2026-08-09 06:52";
 const MONTH = "2026-08";
 const SPANS = [
   {name:"여름방학", from:"2026-07-23", to:"2026-08-17"}
 ];
 const HOLIDAYS = [
   {date:"2026-08-15", name:"광복절"},
-  {date:"2026-08-17", name:"쉬는 날 (광복절 대체)"}
+  {date:"2026-08-17", name:"쉬는 날 광복절"}
 ];
 const DAYS = [
   {date:"2026-08-01", events:[
@@ -204,7 +204,7 @@ const DAYS = [
     {name:"갈라짐", allday:true}
   ]},
   {date:"2026-08-03", events:[
-    {name:"12시 한양코다리 점심 약속", allday:true},
+    {name:"12시 한양코다리 점심 약소", allday:true},
     {name:"과학실 세미나", allday:true},
     {name:"소마", t0:"08:00", t1:"09:00"}
   ]},
@@ -227,7 +227,8 @@ const DAYS = [
   ]},
   {date:"2026-08-08", events:[
     {name:"세종대학교 김주은2", allday:true},
-    {name:"5시 가평 장례식장 출발", t0:"16:30", t1:"17:30"}
+    {name:"5시 가평 장례식장 출발", t0:"16:30", t1:"17:30"},
+    {name:"원주 출발", t0:"18:30", t1:"19:30", isNew:true}
   ]},
   {date:"2026-08-09", events:[
     {name:"갈라짐", t0:"09:30", t1:"10:00"},
@@ -245,7 +246,7 @@ const DAYS = [
     {name:"소마", t0:"20:00", t1:"21:00"}
   ]},
   {date:"2026-08-13", events:[
-    {name:"필라테스", t0:"09:30", t1:"10:30"},
+    {name:"필라태스", t0:"09:30", t1:"10:30"},
     {name:"GPT 8시", t0:"16:00", t1:"17:00"}
   ]},
   {date:"2026-08-14", events:[
@@ -266,6 +267,7 @@ const DAYS = [
     {name:"필라테스", t0:"19:30", t1:"20:30"}
   ]},
   {date:"2026-08-19", events:[
+    {name:"개학식", allday:true},
     {name:"2학기 개학식", allday:true},
     {name:"소마", t0:"20:00", t1:"21:00"}
   ]},
