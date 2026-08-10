@@ -283,60 +283,6 @@ body {
     </div>
     <div class="calm-line" style="margin-top:28px;">오늘 주의: 과학세미나가 오전 9시 시작이라 아침 여유가 짧습니다. 저녁 8시 소마까지 잊지 않으면 조치 필요한 메일은 없는 하루입니다.</div>
 
-    <!-- DIARY-CARD-START : 이 블록은 매일 재생성 시에도 그대로 유지할 것 -->
-    <div class="list diary">
-      <h2>일기 쓰기</h2>
-      <p class="date-label" id="diaryDate"></p>
-      <textarea id="diaryText" placeholder="오늘 하루를 몇 줄로 남겨 두세요."></textarea>
-      <div class="btns">
-        <button class="primary" id="btnSave" type="button">저장하기</button>
-        <button id="btnList" type="button">이전 일기 불러오기</button>
-        <button id="btnToday" type="button" style="display:none">오늘 일기로 돌아가기</button>
-        <span class="status" id="diaryStatus"></span>
-      </div>
-      <div class="entries" id="entries"></div>
-    </div>
-    <script>
-    (function(){
-      var KEY='morning-brief-diary-v1';
-      var $=function(id){return document.getElementById(id)};
-      var ta=$('diaryText'),st=$('diaryStatus'),list=$('entries'),btnToday=$('btnToday');
-      function todayStr(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-      var editing=todayStr();
-      function store(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}}
-      function put(s){localStorage.setItem(KEY,JSON.stringify(s))}
-      function fmt(ds){var p=ds.split('-');var d=new Date(p[0],p[1]-1,p[2]);
-        return p[0]+'년 '+Number(p[1])+'월 '+Number(p[2])+'일 ('+['일','월','화','수','목','금','토'][d.getDay()]+')'}
-      function setEditing(ds){editing=ds;var s=store();ta.value=(s[ds]&&s[ds].text)||'';
-        $('diaryDate').textContent=fmt(ds)+(ds===todayStr()?' · 오늘':'');
-        btnToday.style.display=(ds===todayStr())?'none':'inline-block';st.textContent=''}
-      function save(auto){var s=store();var t=ta.value;
-        if(!t.trim()){delete s[editing]}else{s[editing]={text:t,savedAt:Date.now()}}
-        put(s);var n=new Date();
-        st.textContent=(auto?'자동 저장됨 ':'저장됨 ')+String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');
-        if(list.classList.contains('show'))render()}
-      function render(){var s=store();var days=Object.keys(s).sort().reverse();list.innerHTML='';
-        if(!days.length){var e=document.createElement('div');e.className='empty-entries';
-          e.textContent='저장된 일기가 아직 없습니다.';list.appendChild(e);return}
-        days.forEach(function(ds){var row=document.createElement('div');row.className='entry';
-          var d1=document.createElement('span');d1.className='edate';d1.textContent=fmt(ds);
-          var d2=document.createElement('span');d2.className='epreview';d2.textContent=s[ds].text.split('\n')[0];
-          var d3=document.createElement('span');d3.className='edel';d3.textContent='지우기';
-          d3.onclick=function(ev){ev.stopPropagation();
-            if(confirm(fmt(ds)+' 일기를 지울까요?')){var s2=store();delete s2[ds];put(s2);render();
-              if(editing===ds)setEditing(todayStr())}};
-          row.onclick=function(){setEditing(ds);list.classList.add('show')};
-          row.appendChild(d1);row.appendChild(d2);row.appendChild(d3);list.appendChild(row)})}
-      var timer=null;
-      ta.addEventListener('input',function(){clearTimeout(timer);timer=setTimeout(function(){save(true)},1200)});
-      $('btnSave').onclick=function(){clearTimeout(timer);save(false)};
-      $('btnList').onclick=function(){list.classList.toggle('show');if(list.classList.contains('show'))render()};
-      btnToday.onclick=function(){setEditing(todayStr())};
-      window.addEventListener('beforeunload',function(){if(ta.value.trim()){clearTimeout(timer);save(true)}});
-      setEditing(todayStr());
-    })();
-    </script>
-    <!-- DIARY-CARD-END -->
   </div>
   </div>
 </div>
