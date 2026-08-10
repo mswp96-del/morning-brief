@@ -1,0 +1,47 @@
+# 일기 카드 가드 — 매 푸시마다 diary/index.html의 일기 쓰기 카드가
+# diary/diary-card.canonical.html(정본)과 동일한지 검사하고,
+# 깨졌으면 마지막 정상 커밋의 diary/index.html로 자동 복구한다.
+# 일기 카드를 의도적으로 바꾸려면 정본 파일도 같은 커밋에서 함께 바꿀 것.
+name: Guard diary card
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify and self-heal
+        run: |
+          set -e
+          CANON=diary/diary-card.canonical.html
+          extract() { sed -n '/DIARY-CARD-START/,/DIARY-CARD-END/p' "$1"; }
+          BROKEN=0
+          extract diary/index.html > /tmp/card.now || true
+          diff -q /tmp/card.now "$CANON" >/dev/null 2>&1 || BROKEN=1
+          grep -q '\.diary textarea' diary/index.html || BROKEN=1
+          grep -q '\.empty-entries'  diary/index.html || BROKEN=1
+          if [ "$BROKEN" = 1 ]; then
+            echo "::warning::Diary card broken or missing — restoring diary/index.html from last good commit"
+            GOOD=""
+            for c in $(git log --format=%H -- diary/index.html); do
+              git show "$c:diary/index.html" > /tmp/cand 2>/dev/null || continue
+              extract /tmp/cand > /tmp/card.cand || true
+              if diff -q /tmp/card.cand "$CANON" >/dev/null 2>&1 && grep -q '\.diary textarea' /tmp/cand; then
+                GOOD="$c"; break
+              fi
+            done
+            if [ -z "$GOOD" ]; then echo "::error::No good version found in history"; exit 1; fi
+            git show "$GOOD:diary/index.html" > diary/index.html
+            git config user.name "Diary Guard"
+            git config user.email "guard@users.noreply.github.com"
+            git commit -am "[guard] restore diary card (auto-heal from ${GOOD:0:7})"
+            git push
+          fi
+          # 메인 페이지는 이모지 카드 디자인이어야 한다 — 자동 수정은 못 하니 실패로 표시만.
+          grep -q '캘린더 열기' index.html && grep -q '메일 열기' index.html \
+            || { echo "::error::index.html lost the emoji-card design (캘린더/메일 buttons missing)"; exit 1; }
