@@ -1,18 +1,72 @@
     <!-- DIARY-CARD-START : 이 블록은 매일 재생성 시에도 그대로 유지할 것 -->
     <div class="list diary">
       <h2>일기 쓰기</h2>
-      <p class="date-label" id="diaryDate"></p>
-      <textarea id="diaryText" placeholder="오늘 하루를 몇 줄로 남겨 두세요."></textarea>
-      <div class="btns">
-        <button class="primary" id="btnSave" type="button">저장하기</button>
-        <button id="btnList" type="button">이전 일기 불러오기</button>
-        <button id="btnToday" type="button" style="display:none">오늘 일기로 돌아가기</button>
-        <span class="status" id="diaryStatus"></span>
+
+      <div id="diarySyncBox">
+        <p class="date-label" id="diarySyncNote">구글 시트에 저장됩니다 — 어느 기기에서 열어도 같은 일기가 보입니다.</p>
+        <iframe id="diaryFrame" title="일기 쓰기"
+                src="https://script.google.com/macros/s/AKfycbzfUE_UHUny92CdHKdpdq9qv0mSOAxXl1VSGFVueW4yCihS1BfuJ42y_FGBQyuhQLBVcQ/exec"
+                style="width:100%;border:0;height:420px;display:block;background:transparent;overflow:hidden"></iframe>
       </div>
-      <div class="entries" id="entries"></div>
+
+      <div id="diaryLocalBox" style="display:none">
+        <p class="date-label" id="diaryFallbackNote"></p>
+        <p class="date-label" id="diaryDate"></p>
+        <textarea id="diaryText" placeholder="오늘 하루를 몇 줄로 남겨 두세요."></textarea>
+        <div class="btns">
+          <button class="primary" id="btnSave" type="button">저장하기</button>
+          <button id="btnList" type="button">이전 일기 불러오기</button>
+          <button id="btnToday" type="button" style="display:none">오늘 일기로 돌아가기</button>
+          <span class="status" id="diaryStatus"></span>
+        </div>
+        <div class="entries" id="entries"></div>
+      </div>
     </div>
     <script>
     (function(){
+      /* --- 시트 일기장(iframe) 연결 --- */
+      var MIGRATED='morning-brief-diary-migrated-v1';
+      var KEY0='morning-brief-diary-v1';
+      var frame=document.getElementById('diaryFrame');
+      var syncBox=document.getElementById('diarySyncBox');
+      var localBox=document.getElementById('diaryLocalBox');
+      var ready=false;
+
+      function showLocal(reason){
+        if(ready) return;
+        syncBox.style.display='none';
+        localBox.style.display='';
+        document.getElementById('diaryFallbackNote').textContent=reason;
+      }
+      /* 8초 안에 시트 일기장이 응답하지 않으면(쿠키 차단 등) 브라우저 저장 일기로 전환 */
+      var failTimer=setTimeout(function(){
+        showLocal('시트 일기장을 불러오지 못했습니다(브라우저의 쿠키 차단 때문일 수 있습니다). 이 기기에 저장되는 일기로 대신 씁니다.');
+      },8000);
+
+      window.addEventListener('message',function(ev){
+        var d=ev.data; if(!d||!d.type) return;
+        if(d.type==='diary-ready'){
+          ready=true; clearTimeout(failTimer);
+          /* 예전에 이 브라우저에 저장해 둔 일기를 한 번만 시트로 올린다 */
+          try{
+            if(!localStorage.getItem(MIGRATED)){
+              var s=JSON.parse(localStorage.getItem(KEY0)||'{}');
+              var list=[];
+              for(var k in s){ if(s[k]&&s[k].text) list.push({date:k,text:s[k].text}); }
+              if(list.length){ frame.contentWindow.postMessage({type:'diary-import',entries:list},'*'); }
+              else { localStorage.setItem(MIGRATED,'1'); }
+            }
+          }catch(e){}
+        }
+        if(d.type==='diary-import-done'){
+          try{ localStorage.setItem(MIGRATED,'1'); }catch(e){}
+        }
+        if(d.type==='diary-height'&&d.height){
+          frame.style.height=Math.max(320,d.height+24)+'px';
+        }
+      });
+
+      /* --- 아래는 기존 브라우저 저장 일기(예비용). 시트가 안 뜰 때만 화면에 나온다. --- */
       var KEY='morning-brief-diary-v1';
       var $=function(id){return document.getElementById(id)};
       var ta=$('diaryText'),st=$('diaryStatus'),list=$('entries'),btnToday=$('btnToday');
