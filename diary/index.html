@@ -329,10 +329,16 @@ body {
 
     <!-- DIARY-CARD-START : 이 블록은 매일 재생성 시에도 그대로 유지할 것 -->
     <div class="list diary">
-      <h2>일기 쓰기</h2>
+      <div id="diaryTools" style="display:none;margin:0 0 14px;padding:12px 14px;border:1px solid #E3E0D8;border-radius:8px;background:#fff">
+        <div class="date-label" id="diaryToolsNote" style="margin:0 0 10px"></div>
+        <div class="btns">
+          <button id="btnMigrate" type="button">시트로 옮기기</button>
+          <button id="btnBackup" type="button">백업 파일로 내려받기</button>
+          <span class="status" id="diaryToolsStatus"></span>
+        </div>
+      </div>
 
       <div id="diarySyncBox">
-        <p class="date-label" id="diarySyncNote">구글 시트에 저장됩니다 — 어느 기기에서 열어도 같은 일기가 보입니다.</p>
         <iframe id="diaryFrame" title="일기 쓰기"
                 src="https://script.google.com/macros/s/AKfycbzfUE_UHUny92CdHKdpdq9qv0mSOAxXl1VSGFVueW4yCihS1BfuJ42y_FGBQyuhQLBVcQ/exec"
                 style="width:100%;border:0;height:420px;display:block;background:transparent;overflow:hidden"></iframe>
@@ -360,6 +366,46 @@ body {
       var syncBox=document.getElementById('diarySyncBox');
       var localBox=document.getElementById('diaryLocalBox');
       var ready=false;
+      var frameWin=null;
+
+      function oldEntries(){
+        var out=[];
+        try{
+          var s=JSON.parse(localStorage.getItem(KEY0)||'{}');
+          for(var k in s){ if(s[k]&&s[k].text) out.push({date:k,text:s[k].text}); }
+        }catch(e){}
+        out.sort(function(a,b){return a.date<b.date?1:-1});
+        return out;
+      }
+      function tStatus(msg,ok){
+        var el=document.getElementById('diaryToolsStatus');
+        el.textContent=msg||''; el.style.color=ok?'#2f7d4f':'';
+      }
+      function refreshTools(){
+        var n=oldEntries().length;
+        var box=document.getElementById('diaryTools');
+        if(!n){ box.style.display='none'; return; }
+        box.style.display='';
+        document.getElementById('diaryToolsNote').textContent=
+          '이 브라우저에 저장된 예전 일기 '+n+'건이 있습니다. 시트로 옮기거나 파일로 내려받아 두세요.';
+      }
+      document.getElementById('btnBackup').onclick=function(){
+        var list=oldEntries();
+        if(!list.length){ tStatus('내려받을 일기가 없습니다.'); return; }
+        var txt=list.map(function(e){return '['+e.date+']\n'+e.text+'\n'}).join('\n');
+        var a=document.createElement('a');
+        a.href=URL.createObjectURL(new Blob([txt],{type:'text/plain;charset=utf-8'}));
+        a.download='일기백업_'+new Date().toISOString().slice(0,10)+'.txt';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        tStatus('내려받았습니다. 다운로드 폴더를 확인하세요.',true);
+      };
+      document.getElementById('btnMigrate').onclick=function(){
+        var list=oldEntries();
+        if(!list.length){ tStatus('옮길 일기가 없습니다.'); return; }
+        if(!frameWin){ tStatus('시트 일기장이 아직 준비되지 않았습니다. 잠시 뒤 다시 눌러 주세요.'); return; }
+        tStatus('옮기는 중…');
+        frameWin.postMessage({type:'diary-import',entries:list},'*');
+      };
 
       function showLocal(reason){
         if(ready) return;
@@ -376,19 +422,22 @@ body {
         var d=ev.data; if(!d||!d.type) return;
         if(d.type==='diary-ready'){
           ready=true; clearTimeout(failTimer);
+          frameWin=ev.source||null;
+          refreshTools();
           /* 예전에 이 브라우저에 저장해 둔 일기를 한 번만 시트로 올린다 */
           try{
             if(!localStorage.getItem(MIGRATED)){
               var s=JSON.parse(localStorage.getItem(KEY0)||'{}');
               var list=[];
               for(var k in s){ if(s[k]&&s[k].text) list.push({date:k,text:s[k].text}); }
-              if(list.length&&ev.source){ ev.source.postMessage({type:'diary-import',entries:list},'*'); }
+              if(list.length&&ev.source){ ev.source.postMessage({type:'diary-import',entries:list},'*'); tStatus('예전 일기를 옮기는 중…'); }
               else { localStorage.setItem(MIGRATED,'1'); }
             }
           }catch(e){}
         }
         if(d.type==='diary-import-done'){
           try{ localStorage.setItem(MIGRATED,'1'); }catch(e){}
+          tStatus('시트로 '+(d.imported||0)+'건을 옮겼습니다. 이제 다른 기기에서도 보입니다.',true);
         }
         if(d.type==='diary-height'&&d.height){
           frame.style.height=Math.max(320,d.height+24)+'px';
@@ -432,6 +481,7 @@ body {
       btnToday.onclick=function(){setEditing(todayStr())};
       window.addEventListener('beforeunload',function(){if(ta.value.trim()){clearTimeout(timer);save(true)}});
       setEditing(todayStr());
+      refreshTools();
     })();
     </script>
     <!-- DIARY-CARD-END -->
