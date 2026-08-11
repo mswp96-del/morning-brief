@@ -5,6 +5,7 @@
         <div class="btns">
           <button id="btnMigrate" type="button">시트로 옮기기</button>
           <button id="btnBackup" type="button">백업 파일로 내려받기</button>
+          <button id="btnBook" type="button">책자용 PDF 만들기</button>
           <span class="status" id="diaryToolsStatus"></span>
         </div>
       </div>
@@ -55,10 +56,11 @@
       function refreshTools(){
         var n=oldEntries().length;
         var box=document.getElementById('diaryTools');
-        if(!n){ box.style.display='none'; return; }
         box.style.display='';
-        document.getElementById('diaryToolsNote').textContent=
-          '이 브라우저에 저장된 예전 일기 '+n+'건이 있습니다. 시트로 옮기거나 파일로 내려받아 두세요.';
+        document.getElementById('btnMigrate').style.display=n?'':'none';
+        document.getElementById('diaryToolsNote').textContent= n
+          ? ('이 브라우저에 저장된 예전 일기 '+n+'건이 있습니다. 시트로 옮기거나 파일로 내려받아 두세요.')
+          : '일기 보관 도구';
       }
       document.getElementById('btnBackup').onclick=function(){
         var list=oldEntries();
@@ -69,6 +71,71 @@
         a.download='일기백업_'+new Date().toISOString().slice(0,10)+'.txt';
         document.body.appendChild(a); a.click(); document.body.removeChild(a);
         tStatus('내려받았습니다. 다운로드 폴더를 확인하세요.',true);
+      };
+      /* ---- 책자용 PDF 만들기 ---- */
+      var sheetCache=null;
+      function mergeEntries(a,b){
+        var m={};
+        (a||[]).forEach(function(e){ if(e&&e.date&&e.text) m[e.date]=e.text; });
+        (b||[]).forEach(function(e){ if(e&&e.date&&e.text) m[e.date]=e.text; });
+        return Object.keys(m).sort().map(function(k){ return {date:k,text:m[k]}; });
+      }
+      function esc(s){ return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]; }); }
+      function kDate(ds){
+        var p=ds.split('-'), d=new Date(p[0],p[1]-1,p[2]);
+        return {y:+p[0],m:+p[1],d:+p[2],w:['일','월','화','수','목','금','토'][d.getDay()]};
+      }
+      function makeBook(entries){
+        if(!entries.length){ tStatus('만들 일기가 없습니다.'); return; }
+        var first=kDate(entries[0].date), last=kDate(entries[entries.length-1].date);
+        var period=first.y+'년 '+first.m+'월'+(first.y===last.y&&first.m===last.m?'':' – '+last.y+'년 '+last.m+'월');
+        var body='', curMonth='';
+        entries.forEach(function(e){
+          var k=kDate(e.date), mk=k.y+'-'+k.m;
+          if(mk!==curMonth){
+            curMonth=mk;
+            body+='<h2 class="mon">'+k.y+'년 '+k.m+'월</h2>';
+          }
+          body+='<article><h3>'+k.m+'월 '+k.d+'일 <span>'+k.w+'요일</span></h3><p>'+esc(e.text).replace(/\n/g,'<br>')+'</p></article>';
+        });
+        var html='<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>일기 '+period+'</title><style>'
+        +'@page{size:A4;margin:22mm 20mm 20mm}'
+        +'*{box-sizing:border-box}'
+        +'body{margin:0;font-family:"Noto Serif KR",Batang,serif;color:#1d1c19;line-height:1.85;font-size:11.2pt}'
+        +'.cover{height:calc(100vh - 44mm);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;page-break-after:always}'
+        +'.cover h1{font-size:34pt;font-weight:600;margin:0 0 18px;letter-spacing:.06em}'
+        +'.cover .p{font-size:13pt;color:#6b6a63;margin:0 0 6px}'
+        +'.cover .rule{width:52px;border-top:2px solid #C6613F;margin:26px auto 0}'
+        +'.mon{page-break-before:always;font-size:19pt;font-weight:600;margin:0 0 22px;padding-bottom:9px;border-bottom:1px solid #d8d4cb;letter-spacing:.04em}'
+        +'.mon:first-of-type{page-break-before:avoid}'
+        +'article{page-break-inside:avoid;margin:0 0 24px}'
+        +'article h3{font-size:12.4pt;font-weight:600;margin:0 0 7px;color:#C6613F}'
+        +'article h3 span{color:#8a8880;font-weight:400;font-size:10.4pt;margin-left:3px}'
+        +'article p{margin:0;white-space:normal;text-align:justify}'
+        +'@media screen{body{background:#f2f0ea}.sheet{background:#fff;max-width:210mm;margin:16px auto;padding:22mm 20mm;box-shadow:0 2px 14px rgba(0,0,0,.12)}'
+        +'.bar{position:sticky;top:0;background:#1d1c19;color:#fff;padding:12px 18px;font-family:sans-serif;font-size:14px;display:flex;gap:12px;align-items:center;z-index:9}'
+        +'.bar button{font:inherit;padding:7px 16px;border-radius:18px;border:0;background:#C6613F;color:#fff;cursor:pointer}}'
+        +'@media print{.bar{display:none}.sheet{margin:0;padding:0;box-shadow:none;max-width:none}}'
+        +'</style></head><body>'
+        +'<div class="bar"><button onclick="window.print()">PDF로 저장 / 인쇄</button>'
+        +'<span>인쇄 창에서 «대상»을 «PDF로 저장»으로 고르세요. 총 '+entries.length+'편</span></div>'
+        +'<div class="sheet"><div class="cover"><h1>일 기</h1><div class="p">'+period+'</div>'
+        +'<div class="p">모두 '+entries.length+'편</div><div class="rule"></div></div>'+body+'</div></body></html>';
+        var w=window.open('','_blank');
+        if(!w){ tStatus('팝업이 차단됐습니다. 주소창 오른쪽에서 팝업을 허용해 주세요.'); return; }
+        w.document.write(html); w.document.close();
+        tStatus('책자를 새 탭에 열었습니다. «PDF로 저장»을 누르세요.',true);
+      }
+      document.getElementById('btnBook').onclick=function(){
+        tStatus('일기를 모으는 중…');
+        var local=oldEntries();
+        if(frameWin){
+          sheetCache=null;
+          frameWin.postMessage({type:'diary-export-request'},'*');
+          setTimeout(function(){ makeBook(mergeEntries(local,sheetCache)); },1400);
+        } else {
+          makeBook(mergeEntries(local,null));
+        }
       };
       document.getElementById('btnMigrate').onclick=function(){
         var list=oldEntries();
@@ -106,6 +173,7 @@
             }
           }catch(e){}
         }
+        if(d.type==='diary-export-data'){ sheetCache=d.entries||[]; }
         if(d.type==='diary-import-done'){
           try{ localStorage.setItem(MIGRATED,'1'); }catch(e){}
           tStatus('시트로 '+(d.imported||0)+'건을 옮겼습니다. 이제 다른 기기에서도 보입니다.',true);
