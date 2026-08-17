@@ -132,7 +132,24 @@
         if(frameWin){
           sheetCache=null;
           frameWin.postMessage({type:'diary-export-request'},'*');
-          setTimeout(function(){ makeBook(mergeEntries(local,sheetCache)); },1400);
+          /* 시트 응답을 고정 시간만 기다리면 늦게 올 때 시트 일기가 통째로 빠진다.
+             도착하는 즉시 만들고, 최대 12초까지 기다린다. */
+          var waited=0;
+          var poll=setInterval(function(){
+            waited+=200;
+            if(sheetCache!==null){
+              clearInterval(poll);
+              makeBook(mergeEntries(local,sheetCache));
+            } else if(waited>=12000){
+              clearInterval(poll);
+              if(local.length){
+                tStatus('시트 일기장이 응답하지 않아 이 브라우저에 저장된 일기만 넣었습니다. 잠시 뒤 다시 눌러 주세요.');
+                makeBook(mergeEntries(local,null));
+              } else {
+                tStatus('시트 일기장이 응답하지 않았습니다. 새로고침 뒤 다시 눌러 주세요.');
+              }
+            }
+          },200);
         } else {
           makeBook(mergeEntries(local,null));
         }

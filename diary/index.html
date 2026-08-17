@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>아침 브리핑 · 2026년 8월 17일</title>
+<title>아침 브리핑 · 2026년 8월 18일</title>
 <style>
 @font-face {
   font-family: 'Fraunces';
@@ -235,7 +235,7 @@ body {
 <div class="band band-top">
   <div class="inner">
     <div class="day-date">2026년 8월 18일 · 화요일 · 2학기 근무 첫날</div>
-    <h1 class="headline">방학이 끝나고 다시 출근하는 첫날입니다. 오전 9시 병원 처방 하나, 저녁 필라테스 하나뿐이니 낮 시간은 밀린 공문 세 건을 걷어내는 데 쓰면 하루가 정리됩니다.</h1>
+    <h1 class="headline">방학이 끝나고 다시 출근하는 첫날입니다. 오전 10시에 「찾아가는 AI교실」 접수가 열리고, 이틀 뒤 전자칠판 조사 마감이 붙습니다. 병원과 필라테스 사이의 낮 시간이 밀린 공문을 걷어낼 자리입니다.</h1>
 
 <svg class="drawing" viewBox="0 0 840 170" xmlns="http://www.w3.org/2000/svg">
       <path d="M 0 118 C 60 116, 120 120, 180 117 C 260 113, 320 119, 400 116 C 470 114, 540 118, 610 115 C 680 113, 750 117, 840 115"
@@ -292,6 +292,16 @@ body {
     <div class="section-label" style="margin-top:34px;">공문 마감 · 임박</div>
     <div class="mail-list">
       <div class="mail-item">
+        <div class="mail-tag">오늘 10:00 개시 · ~8/21 (금) 11:00</div>
+        <div class="mail-subj">「2026년 찾아가는 AI교실」 신청</div>
+        <div class="mail-note">강서중-6612 · 도교육청 미래교육과 · 학급 단위로 일정과 프로그램을 골라 온라인 신청하면 AI교육 전문기관이 학교로 옵니다. 오전 10시에 접수가 열리니 원하는 일정이 있다면 개시 직후가 안전합니다.</div>
+      </div>
+      <div class="mail-item">
+        <div class="mail-tag">D-2 · 8/20 (목)</div>
+        <div class="mail-subj">학교 전자칠판 현황 조사 제출</div>
+        <div class="mail-note">강서중-6667 · 도교육청 미래교육과 · 교육행정데이터통합관리(교데통) 시스템 제출. 일반칠판·전자칠판 보유 현황을 붙임 서식대로 채웁니다.</div>
+      </div>
+      <div class="mail-item">
         <div class="mail-tag">D-3 · 8/21 (금) 14:00</div>
         <div class="mail-subj">전국 중학생 바이오안전성·바이오산업 탐구력 캠프 참가자 모집</div>
         <div class="mail-note">강서중-6242 · 학생·팀 직접 온라인 접수(2인 1팀, 중3 대상). 학교는 안내만 하면 되지만 남은 날이 사흘뿐이라 오늘 안내가 나가야 합니다.</div>
@@ -347,7 +357,7 @@ body {
       </div>
     </div>
 
-    <div class="calm-line" style="margin-top:28px;">오늘 주의: 오늘은 방학 뒤 첫 근무일이라 시스템이 다시 열립니다. 기한이 지난 스마트기기 현황 조사(강서중-6395)와 개인정보파일 일제정비(강서중-6292)를 오전에 먼저 처리하고, 8/21 14시 마감인 바이오 캠프(강서중-6242)는 오늘 학생 안내를 내보내야 합니다. 오전 9시 병원 일정이 있으니 업무 시작 시간을 감안해 두세요.</div>
+    <div class="calm-line" style="margin-top:28px;">오늘 주의: 오전 10시에 「찾아가는 AI교실」(강서중-6612) 접수가 열리는데 병원 일정과 겹칩니다 — 나가기 전에 신청 화면을 열어 두면 좋습니다. 이틀 뒤가 마감인 전자칠판 현황 조사(강서중-6667), 그리고 방학 중 기한이 지난 스마트기기 현황 조사(6395)·개인정보파일 일제정비(6292)까지가 오늘의 몫입니다.</div>
 
     <!-- DIARY-CARD-START : 이 블록은 매일 재생성 시에도 그대로 유지할 것 -->
     <div class="list diary">
@@ -483,7 +493,24 @@ body {
         if(frameWin){
           sheetCache=null;
           frameWin.postMessage({type:'diary-export-request'},'*');
-          setTimeout(function(){ makeBook(mergeEntries(local,sheetCache)); },1400);
+          /* 시트 응답을 고정 시간만 기다리면 늦게 올 때 시트 일기가 통째로 빠진다.
+             도착하는 즉시 만들고, 최대 12초까지 기다린다. */
+          var waited=0;
+          var poll=setInterval(function(){
+            waited+=200;
+            if(sheetCache!==null){
+              clearInterval(poll);
+              makeBook(mergeEntries(local,sheetCache));
+            } else if(waited>=12000){
+              clearInterval(poll);
+              if(local.length){
+                tStatus('시트 일기장이 응답하지 않아 이 브라우저에 저장된 일기만 넣었습니다. 잠시 뒤 다시 눌러 주세요.');
+                makeBook(mergeEntries(local,null));
+              } else {
+                tStatus('시트 일기장이 응답하지 않았습니다. 새로고침 뒤 다시 눌러 주세요.');
+              }
+            }
+          },200);
         } else {
           makeBook(mergeEntries(local,null));
         }
