@@ -1,98 +1,232 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>모닝 브리핑 · 2026-08-28</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오늘의 아침 브리핑 · 2026년 8월 28일</title>
 <style>
-:root{--navy:#1b2a4a;--gold:#b08d3f;--ivory:#faf7f0;--ink:#22262e;--muted:#6b7280;--line:#e5e0d5;--red:#b3261e;}
-*{box-sizing:border-box;}
-body{margin:0;background:var(--ivory);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.6;}
-.wrap{max-width:720px;margin:0 auto;padding:20px 16px 60px;}
-header{border-bottom:3px solid var(--gold);padding-bottom:14px;margin-bottom:18px;}
-h1{margin:0;font-size:22px;letter-spacing:-.02em;color:var(--navy);}
-.date{margin-top:4px;font-size:13px;color:var(--muted);}
-.banner{background:var(--navy);color:#fff;border-radius:10px;padding:14px 16px;font-size:15px;font-weight:600;margin-bottom:22px;}
-h2{font-size:15px;color:var(--navy);margin:26px 0 10px;padding-left:9px;border-left:4px solid var(--gold);}
-.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin-bottom:9px;box-shadow:0 1px 2px rgba(0,0,0,.03);}
-.time{font-size:13px;font-weight:700;color:var(--gold);letter-spacing:.02em;}
-.title{font-size:15px;font-weight:600;margin-top:2px;}
-.meta{font-size:13px;color:var(--muted);margin-top:3px;}
-.tag{display:inline-block;font-size:11px;padding:2px 7px;border-radius:99px;background:#f0ece0;color:#6b5b2e;margin-left:6px;vertical-align:2px;}
-.tag.warn{background:#fdecea;color:var(--red);}
-.sender{font-size:13px;color:var(--muted);}
-ol.actions{margin:0;padding-left:20px;}
-ol.actions li{margin-bottom:8px;font-size:14px;}
-.note{font-size:13px;color:var(--muted);}
-footer{margin-top:34px;font-size:12px;color:var(--muted);text-align:center;border-top:1px solid var(--line);padding-top:14px;}
+  :root {
+    --navy: #1a2744;
+    --gold: #b8964f;
+    --ivory: #faf7f0;
+    --gray: #6b7280;
+    --green: #2f7d4f;
+    --red: #c0392b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--ivory);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Pretendard, sans-serif;
+    color: #222;
+  }
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 24px 20px 20px;
+    text-align: center;
+  }
+  header h1 {
+    margin: 0 0 6px;
+    font-size: 1.3rem;
+    letter-spacing: 0.02em;
+  }
+  header .date {
+    font-size: 0.85rem;
+    color: #cbd2e0;
+  }
+  .banner {
+    max-width: 720px;
+    margin: -14px auto 0;
+    background: var(--gold);
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 28px 16px 60px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #eee;
+  }
+  .card h2 {
+    margin: 0 0 12px;
+    font-size: 1.05rem;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card h2 .icon { font-size: 1.1rem; }
+  .open-btn {
+    margin-left: auto;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--navy);
+    background: #f4f0e6;
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    padding: 4px 12px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .open-btn:hover { background: var(--gold); color: #fff; }
+  .empty {
+    color: var(--gray);
+    font-size: 0.92rem;
+    padding: 6px 0;
+  }
+  .event, .mail, .action {
+    padding: 10px 0;
+    border-bottom: 1px solid #f0eee8;
+  }
+  .event:last-child, .mail:last-child, .action:last-child {
+    border-bottom: none;
+  }
+  .event-title, .mail-subject, .action-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #1a1a1a;
+  }
+  .event-time {
+    font-size: 0.82rem;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .event-meta, .mail-meta {
+    font-size: 0.82rem;
+    color: var(--gray);
+    margin-top: 2px;
+  }
+  .mail-summary {
+    font-size: 0.88rem;
+    color: #444;
+    margin-top: 4px;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 6px;
+    font-weight: 600;
+  }
+  .badge.reply { background: #fdecea; color: var(--red); }
+  .badge.noreply { background: #eef3ee; color: var(--green); }
+  .priority {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    text-align: center;
+    line-height: 22px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+  footer {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--gray);
+    padding: 20px;
+  }
 </style>
+
 </head>
 <body>
-<div class="wrap">
+
 <header>
-<h1>모닝 브리핑</h1>
-<div class="date">2026년 8월 28일 (금) · 생성 06:32 KST</div>
+  <h1>📋 오늘의 아침 브리핑</h1>
+  <div class="date">2026년 8월 28일 (금) · 오전 6:34 KST 생성</div>
 </header>
 
-<div class="banner">오늘 일정 4건, 확인할 메일 0건 — 마감 2건(평가계획서·개인정보 제출)이 오전에 몰려 있습니다.</div>
+<div class="banner">오전에 일정 3건이 몰려 있고, 그중 2건이 30분 겹칩니다 · 급한 메일은 없음</div>
 
-<h2>오늘의 일정</h2>
+<main>
 
-<div class="card">
-<div class="time">07:30 – 08:30</div>
-<div class="title">힉스필드 구독 시작<span class="tag">개인</span></div>
-<div class="meta">장소·화상링크 없음 · 참석자 없음(본인 일정)</div>
-</div>
+  <div class="card">
+    <h2><span class="icon">📅</span> 일정 <a class="open-btn" href="https://calendar.google.com/calendar/u/0/r" target="_blank" rel="noopener">캘린더 열기 ↗</a></h2>
+    <div class="event">
+      <div class="event-time">오전 7:30–8:30</div>
+      <div class="event-title">힉스필드구독 시작 <span class="badge reply">겹침</span></div>
+      <div class="event-meta">아래 평가계획서제출과 오전 8:00–8:30 사이 겹칩니다.</div>
+    </div>
+    <div class="event">
+      <div class="event-time">오전 8:00–9:00</div>
+      <div class="event-title">평가계획서제출 <span class="badge reply">겹침</span></div>
+      <div class="event-meta">힉스필드구독 시작과 30분 겹칩니다. 순서를 조정하거나 하나를 앞뒤로 옮겨 두세요.</div>
+    </div>
+    <div class="event">
+      <div class="event-time">오전 10:00–11:00</div>
+      <div class="event-title">개인정보 제출</div>
+    </div>
+    <div class="event">
+      <div class="event-time">오후 3:00–4:00</div>
+      <div class="event-title">방과후 1</div>
+    </div>
+    <div class="empty">11시~오후 3시, 그리고 오후 4시 이후는 비어 있습니다. 내일(8/29, 토)은 오전 8시 세금계산서 청구, 10시 필라테스, 오후 2시 한의원 일정이 있습니다.</div>
+  </div>
 
-<div class="card">
-<div class="time">08:00 – 09:00</div>
-<div class="title">평가계획서 제출<span class="tag warn">마감</span><span class="tag warn">시간 겹침</span></div>
-<div class="meta">앞 일정(07:30–08:30)과 30분 겹칩니다 · 참석자 없음</div>
-</div>
+  <div class="card">
+    <h2><span class="icon">📧</span> 메일 <a class="open-btn" href="https://mail.google.com/mail/u/0/" target="_blank" rel="noopener">메일 열기 ↗</a></h2>
+    <div class="mail">
+      <div class="mail-subject">새 기기로 계정에 로그인했습니다 — Notion <span class="badge reply">확인 필요</span></div>
+      <div class="mail-meta">어제(8/27) 오전 발신 · 안읽음</div>
+      <div class="mail-summary">국내 IP(180.81.21.81, Windows 기기)에서 Google 계정으로 Notion에 새로 로그인했다는 보안 알림입니다. 본인이 로그인한 것이 맞는지 확인해 보시고, 아니라면 비밀번호를 바꿔 두세요.</div>
+    </div>
+    <div class="mail">
+      <div class="mail-subject">알림: GPT 8시 일정 초대 — Google 캘린더 <span class="badge noreply">지난 일정</span></div>
+      <div class="mail-meta">어제(8/27) 오전 발신 · 안읽음</div>
+      <div class="mail-summary">어제 저녁 8~9시에 열린 「GPT 8시」 일정 초대 알림으로, 이미 지난 일정입니다. 조치할 것 없음.</div>
+    </div>
+    <div class="empty" style="margin-top:6px;">최근 24시간 안읽은 메일은 이 2건뿐이며, 실제 답장이 필요한 메일은 없습니다.</div>
+  </div>
 
-<div class="card">
-<div class="time">10:00 – 11:00</div>
-<div class="title">개인정보 제출<span class="tag warn">마감</span></div>
-<div class="meta">장소·화상링크 없음 · 참석자 없음</div>
-</div>
+  <div class="card">
+    <h2><span class="icon">✅</span> 오늘 챙길 것</h2>
+    <div class="action">
+      <span class="priority">1</span>
+      <span class="action-title">오전 일정 겹침 조정</span>
+      <div class="event-meta" style="margin-left:30px;">힉스필드구독 시작(7:30–8:30)과 평가계획서제출(8:00–9:00)이 겹칩니다. 지금 바로 순서를 정해 두세요.</div>
+    </div>
+    <div class="action">
+      <span class="priority">2</span>
+      <span class="action-title">평가계획서제출 마감 확인</span>
+      <div class="event-meta" style="margin-left:30px;">오전 9시까지입니다. 겹치는 일정과 함께 미리 챙겨 두세요.</div>
+    </div>
+    <div class="action">
+      <span class="priority">3</span>
+      <span class="action-title">개인정보 제출 (10:00–11:00)</span>
+    </div>
+    <div class="action">
+      <span class="priority">4</span>
+      <span class="action-title">방과후 1 수업 준비 (15:00)</span>
+    </div>
+    <div class="action">
+      <span class="priority">5</span>
+      <span class="action-title">Notion 새 기기 로그인 알림 확인</span>
+      <div class="event-meta" style="margin-left:30px;">본인 로그인이 아니라면 비밀번호를 바꿔 두세요.</div>
+    </div>
+  </div>
 
-<div class="card">
-<div class="time">15:00 – 16:00</div>
-<div class="title">방과후 1<span class="tag">수업</span></div>
-<div class="meta">장소·화상링크 없음 · 참석자 없음</div>
-</div>
+</main>
 
-<h2>중요 안 읽은 메일</h2>
-
-<div class="card">
-<div class="note">답장이 필요한 사람이 보낸 메일은 없습니다. 안 읽은 메일 3건은 모두 자동 알림·홍보였습니다.</div>
-</div>
-
-<div class="card">
-<div class="sender">notify@updates.notion.so · 08/27 14:06</div>
-<div class="title" style="font-size:14px;">새 기기로 계정에 로그인했습니다</div>
-<div class="meta">Windows 기기, IP 180.81.21.81(국내)에서 Notion 로그인. 본인 접속이 맞는지만 확인하면 됩니다. 답장 불필요.</div>
-</div>
-
-<div class="card">
-<div class="sender">Google 캘린더 알림 · 어제 일정 리마인더</div>
-<div class="title" style="font-size:14px;">알림: GPT 8시 (8/27 20:00–21:00)</div>
-<div class="meta">지난 일정 알림. 조치 불필요.</div>
-</div>
-
-<div class="card">
-<div class="note">Kahoot 마케팅 메일 1건은 생략했습니다.</div>
-</div>
-
-<h2>오늘 챙길 일</h2>
-<ol class="actions">
-<li><strong>평가계획서 제출(08:00)</strong> — 오늘 브리핑의 최우선. 07:30 일정과 겹치므로 문서를 미리 열어 두고 08시 정각에 바로 제출하세요.</li>
-<li><strong>개인정보 제출(10:00)</strong> — 두 번째 마감. 제출 양식·서명 필요 여부를 오전 중 확인.</li>
-<li><strong>방과후 1(15:00)</strong> — 오후 수업. 오전 마감 2건을 끝낸 뒤 점심 무렵에 자료를 점검할 여유가 있습니다.</li>
-<li><strong>Notion 로그인 알림 확인</strong> — 본인 접속이 아니면 비밀번호 변경. 1분이면 끝납니다.</li>
-</ol>
-
-<footer>Google 캘린더 · Gmail 연동 자동 생성 · 2026-08-28 06:32 KST</footer>
-</div>
+<footer>
+  Google Calendar · Gmail 연동 자동 생성 · 매일 아침 자동 갱신
+</footer>
 </body>
 </html>
