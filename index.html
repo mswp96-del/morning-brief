@@ -3,267 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오늘의 아침 브리핑 · 2026년 9월 2일</title>
+<title>아침 브리핑 · 2026-09-02</title>
 <style>
-  :root {
-    --navy: #1a2744;
-    --gold: #b8964f;
-    --ivory: #faf7f0;
-    --gray: #6b7280;
-    --green: #2f7d4f;
-    --red: #c0392b;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    padding: 0;
-    background: var(--ivory);
-    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", Pretendard, sans-serif;
-    color: #222;
-  }
-  header {
-    background: var(--navy);
-    color: white;
-    padding: 24px 20px 20px;
-    text-align: center;
-  }
-  header h1 {
-    margin: 0 0 6px;
-    font-size: 1.3rem;
-    letter-spacing: 0.02em;
-  }
-  header .date {
-    font-size: 0.85rem;
-    color: #cbd2e0;
-  }
-  .banner {
-    max-width: 720px;
-    margin: -14px auto 0;
-    background: var(--gold);
-    color: #fff;
-    padding: 12px 18px;
-    border-radius: 10px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 0.95rem;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
-  }
-  main {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 28px 16px 60px;
-  }
-  .card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 18px 20px;
-    margin-bottom: 18px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    border: 1px solid #eee;
-  }
-  .card h2 {
-    margin: 0 0 12px;
-    font-size: 1.05rem;
-    color: var(--navy);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .card h2 .icon { font-size: 1.1rem; }
-  .open-btn {
-    margin-left: auto;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--navy);
-    background: #f4f0e6;
-    border: 1px solid var(--gold);
-    border-radius: 20px;
-    padding: 4px 12px;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-  .open-btn:hover { background: var(--gold); color: #fff; }
-  .empty {
-    color: var(--gray);
-    font-size: 0.92rem;
-    padding: 6px 0;
-  }
-  .event, .mail, .action {
-    padding: 10px 0;
-    border-bottom: 1px solid #f0eee8;
-  }
-  .event:last-child, .mail:last-child, .action:last-child {
-    border-bottom: none;
-  }
-  .event-title, .mail-subject, .action-title {
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: #1a1a1a;
-  }
-  .event-time {
-    font-size: 0.82rem;
-    color: var(--gold);
-    font-weight: 600;
-  }
-  .event-meta, .mail-meta {
-    font-size: 0.82rem;
-    color: var(--gray);
-    margin-top: 2px;
-  }
-  .mail-summary {
-    font-size: 0.88rem;
-    color: #444;
-    margin-top: 4px;
-  }
-  .badge {
-    display: inline-block;
-    font-size: 0.72rem;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-left: 6px;
-    font-weight: 600;
-  }
-  .badge.reply { background: #fdecea; color: var(--red); }
-  .badge.noreply { background: #eef3ee; color: var(--green); }
-  .priority {
-    display: inline-block;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--navy);
-    color: #fff;
-    text-align: center;
-    line-height: 22px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    margin-right: 8px;
-  }
-  footer {
-    text-align: center;
-    font-size: 0.75rem;
-    color: var(--gray);
-    padding: 20px;
-  }
+  :root{--navy:#1b2a4a;--gold:#b8963e;--ivory:#fbf8f1;--card:#ffffff;--text:#222;--muted:#6b7280;--line:#e5e1d6;--green:#2e7d32;--amber:#b45309;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ivory);color:var(--text);font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.55}
+  .wrap{max-width:720px;margin:0 auto;padding:20px 16px 40px}
+  header{border-bottom:2px solid var(--gold);padding-bottom:12px;margin-bottom:16px}
+  header h1{margin:0;font-size:22px;color:var(--navy)}
+  header .meta{color:var(--muted);font-size:13px;margin-top:4px}
+  .banner{background:var(--navy);color:#fff;border-radius:10px;padding:14px 16px;font-size:16px;font-weight:600;margin-bottom:18px}
+  .banner span{color:var(--gold)}
+  section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  section h2{margin:0 0 10px;font-size:16px;color:var(--navy);display:flex;align-items:center;gap:8px}
+  section h2::before{content:"";display:inline-block;width:6px;height:18px;background:var(--gold);border-radius:3px}
+  .item{padding:10px 0;border-top:1px solid var(--line)}
+  .item:first-of-type{border-top:none}
+  .time{font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+  .title{font-weight:600}
+  .sub{color:var(--muted);font-size:13px;margin-top:2px}
+  .empty{color:var(--muted);font-size:14px;padding:6px 0}
+  .tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;background:#eef2f7;color:var(--navy);margin-left:6px;vertical-align:middle}
+  .tag.ok{background:#e8f5e9;color:var(--green)}
+  .tag.warn{background:#fff4e5;color:var(--amber)}
+  ol{margin:0;padding-left:20px}
+  ol li{margin:6px 0}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:20px}
 </style>
-
 </head>
 <body>
+<div class="wrap">
+  <header>
+    <h1>아침 브리핑</h1>
+    <div class="meta">2026년 9월 2일 (수) · 생성 07:31 KST · Google Calendar / Gmail 기준</div>
+  </header>
 
-<header>
-  <h1>📋 오늘의 아침 브리핑</h1>
-  <div class="date">2026년 9월 2일 (수) · 자동 생성</div>
-</header>
+  <div class="banner">오늘 요약 — <span>일정 1건</span>, 회신 필요한 메일 <span>0건</span>. 낮 시간은 비어 있습니다.</div>
 
-<div class="banner">낮 일정 없음 · 저녁 8시 소마 · AI 서비스 경진대회 D-4 · 8.31 마감 공문 3건 확인 필요</div>
+  <section>
+    <h2>오늘 일정</h2>
+    <div class="item">
+      <span class="time">20:00 – 21:00</span> <span class="title">소마</span><span class="tag">반복 일정</span>
+      <div class="sub">장소·화상 링크 없음 · 참석자 없음 (개인 일정)</div>
+    </div>
+    <div class="sub" style="margin-top:8px">충돌·연속 회의 없음. 낮 시간대(현재 ~ 20:00) 일정 없음.</div>
+  </section>
 
-<main>
+  <section>
+    <h2>중요 안 읽은 메일</h2>
+    <div class="empty">최근 24시간(및 2주) 내 안 읽은 받은편지함 메일 없음.</div>
+    <div class="sub">보관함에 남은 안 읽음 5건은 모두 자동 알림 — 8/28 일정 알림 4건(힉스필드구독 시작, 평가계획서제출, 개인정보 제출, 방과후 1)과 Google 보안 알림 1건(8/28 Windows 새 로그인). 본인 로그인이면 조치 불필요.</div>
+  </section>
 
-  <div class="card">
-    <h2><span class="icon">📅</span> 일정 <a class="open-btn" href="https://calendar.google.com/calendar/u/0/r" target="_blank" rel="noopener">캘린더 열기 ↗</a></h2>
-    <div class="event">
-      <div class="event-time">오후 8:00–9:00</div>
-      <div class="event-title">소마</div>
-      <div class="event-meta">반복 일정. 오늘의 유일한 시간 지정 일정입니다.</div>
-    </div>
-    <div class="empty">공휴일은 없습니다. 종일 일정과 메모도 없고, 학급·과학실 캘린더에도 오늘 등록된 일정이 없습니다.</div>
-  </div>
+  <section>
+    <h2>오늘 처리할 일</h2>
+    <ol>
+      <li><b>20:00 소마</b> — 저녁 일정 하나뿐. 준비 사항 없음.</li>
+      <li>회신 대기 메일 없음. 마감 임박 항목 없음.</li>
+      <li><span class="tag warn">참고</span> 8/28 Google 보안 알림(Windows 새 로그인) — 본인이 아니면 계정 활동 확인.</li>
+    </ol>
+  </section>
 
-  <div class="card">
-    <h2><span class="icon">📧</span> 메일 <a class="open-btn" href="https://mail.google.com/mail/u/0/" target="_blank" rel="noopener">메일 열기 ↗</a></h2>
-    <div class="mail">
-      <div class="mail-subject">[AI 심층 다이제스트] 2026년 9월 2일 <span class="badge noreply">읽을거리</span></div>
-      <div class="mail-meta">어제 오전 8:09 · 본인 발송(hanmail)</div>
-      <div class="mail-summary">중국 AI·로봇 기업 대형 IPO 붐(상하이·홍콩 540억 달러 조달)이 첫 꼭지입니다.</div>
-    </div>
-    <div class="empty" style="margin-top:6px;">이 밖에는 구글 캘린더 자동 알림 1건(필라테스)뿐입니다. 답장이 필요한 메일은 없습니다.</div>
-  </div>
-
-  <div class="card">
-    <h2><span class="icon">📄</span> 공문 마감</h2>
-    <div class="action"><span class="action-title">임박</span></div>
-    <div class="event">
-      <div class="event-time">9.6 (일) · D-4</div>
-      <div class="event-title">2026 모두의 AI 실험실 AI 서비스 경진대회 신청</div>
-      <div class="event-meta">강서중-6804 · 도교육청 미래교육과 — 참가·기획서 접수 9.6 18:00까지</div>
-    </div>
-    <div class="event">
-      <div class="event-time">9.18 (금) · D-16</div>
-      <div class="event-title">기초학력 2차 향상도 검사 실시</div>
-      <div class="event-meta">강서중-7050 · 도교육청 유초등교육과 — 9.18~10.23, 기간엄수(연장 불가)</div>
-    </div>
-    <div class="event">
-      <div class="event-time">10.6 (화) · D-34</div>
-      <div class="event-title">정보화기기 1차 통합 구매 납품</div>
-      <div class="event-meta">강서중-6391 · 도교육청 미래교육과 — 업체와 일정 조율·설치 장소 안내</div>
-    </div>
-    <div class="event">
-      <div class="event-time">11.27 (금) · D-86</div>
-      <div class="event-title">과학실 안전점검(현장점검 대상교) 실시</div>
-      <div class="event-meta">강서중-1151·퇴계중-1292 · 업무관리시스템 — 현장점검 대상교 여부 확인</div>
-    </div>
-    <div class="event">
-      <div class="event-time">11.30 (월) · D-89</div>
-      <div class="event-title">장애인학대·성범죄 신고의무자 교육 이수 실적 제출</div>
-      <div class="event-meta">강서중-6672 · 춘천교육지원청 교육과 — 제출 공문, 전자문서 제출</div>
-    </div>
-    <div class="event">
-      <div class="event-time">11.30 (월) · D-89</div>
-      <div class="event-title">청소년 과학꿈나무 육성 — 과학강연·그룹멘토링 신청</div>
-      <div class="event-meta">강서중-6782 · 도교육청 미래교육과 — 선착순 접수, 조기 마감 가능</div>
-    </div>
-
-    <div class="action" style="margin-top:10px;"><span class="action-title">기한 경과 · 확인 필요</span></div>
-    <div class="event">
-      <div class="event-time">8.31 · 2일 경과</div>
-      <div class="event-title">디지털새싹 1기 프로그램 신청</div>
-      <div class="event-meta">강서중-4414 · 온라인 상시 접수 — 5.26부터 열려 있던 접수 종료</div>
-    </div>
-    <div class="event">
-      <div class="event-time">8.31 · 2일 경과</div>
-      <div class="event-title">디지털 인프라 점검 협조</div>
-      <div class="event-meta">강서중-4067 · 춘천교육지원청 — 5~8월 점검 기간 종료</div>
-    </div>
-    <div class="event">
-      <div class="event-time">8.31 · 2일 경과</div>
-      <div class="event-title">정보화기기 유지관리 계약 · IDMS 현행화</div>
-      <div class="event-meta">강서중-1201 · IDMS — 보고 기한 8월 말, 상태 확인 필요</div>
-    </div>
-    <div class="event">
-      <div class="event-time">8.21 · 12일 경과</div>
-      <div class="event-title">중학생 바이오안전성·바이오산업 탐구력 캠프 참가자 모집</div>
-      <div class="event-meta">강서중-6242 · 온라인 접수(학생 개별 2인 1팀) — 선발 발표 9.14</div>
-    </div>
-    <div class="event">
-      <div class="event-time">8.20 · 13일 경과</div>
-      <div class="event-title">학교 전자칠판 현황 조사 제출</div>
-      <div class="event-meta">강서중-6667 · 교데통 — 제출 공문, 제출 이력 확인 필요</div>
-    </div>
-    <div class="empty">학생 이름·연락처가 포함된 공문은 이 목록에 싣지 않습니다. 해당 건은 공문 원본을 확인하세요.</div>
-  </div>
-
-  <div class="card">
-    <h2><span class="icon">✅</span> 오늘 챙길 것</h2>
-    <div class="action">
-      <span class="priority">1</span>
-      <span class="action-title">AI 서비스 경진대회 참가 여부 결정 (D-4)</span>
-      <div class="event-meta" style="margin-left:30px;">기획서까지 9.6(일) 18시 마감. 주말을 빼면 금요일까지입니다. 참가한다면 오늘 팀·주제를 정하세요.</div>
-    </div>
-    <div class="action">
-      <span class="priority">2</span>
-      <span class="action-title">8.31 마감 공문 3건 상태 확인</span>
-      <div class="event-meta" style="margin-left:30px;">디지털새싹 신청 · 디지털 인프라 점검 · IDMS 현행화. 처리했으면 닫고, 남았으면 후속 조치를 정하세요.</div>
-    </div>
-    <div class="action">
-      <span class="priority">3</span>
-      <span class="action-title">전자칠판 현황 조사 제출 이력 확인</span>
-      <div class="event-meta" style="margin-left:30px;">강서중-6667 · 제출 기한 8.20이 13일 지났습니다. 교데통에서 확인.</div>
-    </div>
-  </div>
-
-</main>
-
-<footer>
-  Google Calendar · Gmail · Drive 연동 자동 생성 · 매일 아침 자동 갱신
-</footer>
+  <footer>Google Calendar·Gmail 연동으로 자동 생성 · 캘린더 표시 시간대는 Asia/Dili(GMT+9, KST와 동일)</footer>
+</div>
 </body>
 </html>
