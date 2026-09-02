@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>아침 브리핑 · 2026-09-02</title>
+<title>아침 브리핑 · 2026-09-03</title>
 <style>
   :root{--navy:#1b2a4a;--gold:#b8963e;--ivory:#fbf8f1;--card:#ffffff;--text:#222;--muted:#6b7280;--line:#e5e1d6;--green:#2e7d32;--amber:#b45309;}
   *{box-sizing:border-box}
@@ -17,6 +17,10 @@
   section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
   section h2{margin:0 0 10px;font-size:16px;color:var(--navy);display:flex;align-items:center;gap:8px}
   section h2::before{content:"";display:inline-block;width:6px;height:18px;background:var(--gold);border-radius:3px}
+  .section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .section-head h2{margin:0}
+  .open-btn{flex:0 0 auto;font-size:12px;font-weight:600;color:var(--navy);background:#eef2f7;border:1px solid var(--line);border-radius:999px;padding:5px 12px;text-decoration:none;white-space:nowrap}
+  .open-btn:hover{background:#e3e9f2}
   .item{padding:10px 0;border-top:1px solid var(--line)}
   .item:first-of-type{border-top:none}
   .time{font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
@@ -34,33 +38,46 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>아침 브리핑</h1>
-    <div class="meta">2026년 9월 2일 (수) · 생성 07:31 KST · Google Calendar / Gmail 기준</div>
+    <h1>📋 오늘의 아침 브리핑</h1>
+    <div class="meta">2026년 9월 3일 (목) · 생성 06:35 KST · Google Calendar / Gmail 기준</div>
   </header>
 
-  <div class="banner">오늘 요약 — <span>일정 1건</span>, 회신 필요한 메일 <span>0건</span>. 낮 시간은 비어 있습니다.</div>
+  <div class="banner">오늘 요약 — <span>일정 1건</span>, 회신 필요한 메일 <span>0건</span>. 낮 시간은 완전히 비어 있습니다.</div>
 
   <section>
-    <h2>오늘 일정</h2>
+    <div class="section-head">
+      <h2>📅 일정</h2>
+      <a class="open-btn" href="https://calendar.google.com/calendar/u/0/r" target="_blank" rel="noopener">캘린더 열기 ↗</a>
+    </div>
     <div class="item">
-      <span class="time">20:00 – 21:00</span> <span class="title">소마</span><span class="tag">반복 일정</span>
+      <span class="time">20:00 – 21:00</span> <span class="title">GPT 8시</span><span class="tag">반복 일정</span>
       <div class="sub">장소·화상 링크 없음 · 참석자 없음 (개인 일정)</div>
     </div>
-    <div class="sub" style="margin-top:8px">충돌·연속 회의 없음. 낮 시간대(현재 ~ 20:00) 일정 없음.</div>
+    <div class="sub" style="margin-top:8px">충돌·연속 회의 없음. 지금부터 20:00까지 낮 시간대는 완전히 비어 있습니다. 내일(9/4, 금)도 등록된 일정이 없습니다.</div>
   </section>
 
   <section>
-    <h2>중요 안 읽은 메일</h2>
-    <div class="empty">최근 24시간(및 2주) 내 안 읽은 받은편지함 메일 없음.</div>
-    <div class="sub">보관함에 남은 안 읽음 5건은 모두 자동 알림 — 8/28 일정 알림 4건(힉스필드구독 시작, 평가계획서제출, 개인정보 제출, 방과후 1)과 Google 보안 알림 1건(8/28 Windows 새 로그인). 본인 로그인이면 조치 불필요.</div>
+    <div class="section-head">
+      <h2>📧 메일</h2>
+      <a class="open-btn" href="https://mail.google.com/mail/u/0/" target="_blank" rel="noopener">메일 열기 ↗</a>
+    </div>
+    <div class="empty">최근 24시간 내 사람이 보낸 안 읽은 메일 없음. 받은편지함 안 읽음은 2건뿐이며 모두 자동 알림입니다.</div>
+    <div class="item">
+      <span class="title">Google 캘린더 알림</span><span class="tag">자동 알림</span>
+      <div class="sub">9/2 19:50 · "소마" 일정 초대 알림 — 본인이 만든 개인 일정. 조치 불필요.</div>
+    </div>
+    <div class="item">
+      <span class="title">Google 계정 데이터 공유 안내</span><span class="tag">자동 알림</span>
+      <div class="sub">9/2 16:17 · "Google 계정으로 로그인"으로 Claude에 로그인했다는 안내. 본인 로그인이면 조치 불필요.</div>
+    </div>
   </section>
 
   <section>
-    <h2>오늘 처리할 일</h2>
+    <h2>✅ 오늘 챙길 것</h2>
     <ol>
-      <li><b>20:00 소마</b> — 저녁 일정 하나뿐. 준비 사항 없음.</li>
+      <li><b>20:00 GPT 8시</b> — 오늘의 유일한 일정. 준비 사항 없음.</li>
       <li>회신 대기 메일 없음. 마감 임박 항목 없음.</li>
-      <li><span class="tag warn">참고</span> 8/28 Google 보안 알림(Windows 새 로그인) — 본인이 아니면 계정 활동 확인.</li>
+      <li><span class="tag ok">참고</span> 낮 시간과 내일 일정이 모두 비어 있어 여유 있게 쓰실 수 있는 하루입니다.</li>
     </ol>
   </section>
 
