@@ -186,7 +186,7 @@
 
 <script>
 /* ════════ 캘린더 데이터 (자동 갱신 영역 시작) ════════ */
-const SYNCED_AT = "2026-10-11 06:52";
+const SYNCED_AT = "2026-10-12 06:52";
 const MONTH = "2026-10";
 const SPANS = [
   {name:"2학기 1회고사", from:"2026-10-07", to:"2026-10-08"},
@@ -234,10 +234,10 @@ const DAYS = [
     {name:"필라테스", t0:"10:00", t1:"11:00"}
   ]},
   {date:"2026-10-11", events:[
-    {name:"갈라짐", allday:true}
+    {name:"갈라짐 취소 효자동", allday:true}
   ]},
   {date:"2026-10-12", events:[
-    {name:"11/3 공문 제출", allday:true, isNew:true},
+    {name:"11/3 공문 제출", allday:true},
     {name:"27 도서", allday:true},
     {name:"장애예방교육(2,3교시)", t0:"09:45", t1:"11:45"},
     {name:"소마", t0:"20:00", t1:"21:00"}
@@ -246,6 +246,9 @@ const DAYS = [
     {name:"최현준 상덤", t0:"10:00", t1:"11:00"},
     {name:"필라테스 7시30분", t0:"19:00", t1:"20:00"}
   ]},
+  {date:"2026-10-14", events:[
+    {name:"소마 취소", allday:true, isNew:true}
+  ]},
   {date:"2026-10-16", events:[
     {name:"GPT 8시", t0:"20:00", t1:"21:00"}
   ]},
@@ -253,7 +256,8 @@ const DAYS = [
     {name:"필라테스", t0:"10:00", t1:"11:00"}
   ]},
   {date:"2026-10-18", events:[
-    {name:"갈라짐", allday:true}
+    {name:"갈라짐", allday:true},
+    {name:"예약", t0:"10:50", t1:"11:50", isNew:true}
   ]},
   {date:"2026-10-19", events:[
     {name:"소마", t0:"20:00", t1:"21:00"}
