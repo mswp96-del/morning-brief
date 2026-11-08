@@ -186,7 +186,7 @@
 
 <script>
 /* ════════ 캘린더 데이터 (자동 갱신 영역 시작) ════════ */
-const SYNCED_AT = "2026-11-03 06:52";
+const SYNCED_AT = "2026-11-09 05:49";
 const MONTH = "2026-11";
 const SPANS = [
   {name:"3학년 2회고사", from:"2026-11-04", to:"2026-11-06"},
@@ -206,14 +206,15 @@ const DAYS = [
   {date:"2026-11-03", events:[
     {name:"찾아가는 진로DAY 1,2,3,4교시 1학년", allday:true},
     {name:"메가박스 토크쇼 5,6,7", allday:true},
-    {name:"최현준 언어치료 시작", allday:true, isNew:true},
+    {name:"최현준 언어치료 시작", allday:true},
     {name:"필라테스 7시30분", t0:"19:00", t1:"20:00"}
   ]},
   {date:"2026-11-04", events:[
     {name:"소마", t0:"20:00", t1:"21:00"}
   ]},
   {date:"2026-11-05", events:[
-    {name:"2교시 과학시험", allday:true, isNew:true},
+    {name:"2교시 과학시험", allday:true},
+    {name:"미트 컨설팅 김성기 춘천고", t0:"15:30", t1:"16:30"},
     {name:"GPT 7시", t0:"18:15", t1:"19:15"}
   ]},
   {date:"2026-11-06", events:[
@@ -226,11 +227,13 @@ const DAYS = [
     {name:"갈라짐", allday:true}
   ]},
   {date:"2026-11-09", events:[
+    {name:"[공문 마감] 정보화기기 보유현황 조사 제출 (통합관리시스템)", allday:true},
+    {name:"[학생 신청일] 서울대 일일공학교실 신청 18:00~23:59 (하루만)", t0:"18:00", t1:"23:59"},
     {name:"소마", t0:"19:00", t1:"20:00"}
   ]},
   {date:"2026-11-10", events:[
     {name:"Wee센터 순회상담(강서중)", allday:true},
-    {name:"최현준 언어치료 끝", allday:true, isNew:true},
+    {name:"최현준 언어치료 끝", allday:true},
     {name:"필라테스 7시30분", t0:"19:00", t1:"20:00"}
   ]},
   {date:"2026-11-11", events:[
@@ -241,6 +244,8 @@ const DAYS = [
   ]},
   {date:"2026-11-13", events:[
     {name:"[3학년] 수행평가 입력·마감·출력 제출", allday:true},
+    {name:"[공문 마감] 전환기 교육 운영계획 신청", allday:true},
+    {name:"[공문 마감] 강원교육장학회 장학생 추천 서류 4종 제출 (교육지원청)", allday:true},
     {name:"[영재] 강원대 과학영재 우선선발·면접대상자 발표", allday:true},
     {name:"[영재] 교육청 영재 학교추천위원회 마감", t0:"08:30", t1:"09:00"}
   ]},
@@ -258,6 +263,7 @@ const DAYS = [
   ]},
   {date:"2026-11-18", events:[
     {name:"중3내신성적산출일", allday:true},
+    {name:"[선택] 삼성드림클래스 참여신청 마감 (희망 시, 학년별 10명 요건)", allday:true},
     {name:"소마", t0:"20:00", t1:"21:00"}
   ]},
   {date:"2026-11-19", events:[
@@ -266,7 +272,8 @@ const DAYS = [
   ]},
   {date:"2026-11-20", events:[
     {name:"재량휴업일", allday:true},
-    {name:"[3학년] 성적산출기준일", allday:true}
+    {name:"[3학년] 성적산출기준일", allday:true},
+    {name:"[선택] 강원대 Teach for Gangwon 참가신청 마감 (희망 시 공문 발송)", allday:true}
   ]},
   {date:"2026-11-21", events:[
     {name:"[영재] 강원대 과학영재 2단계 심층면접", allday:true},
@@ -288,8 +295,12 @@ const DAYS = [
     {name:"찾아가는 진로DAY 1,2,3,4교시 3학년", allday:true},
     {name:"GPT 7시", t0:"18:15", t1:"19:15"}
   ]},
+  {date:"2026-11-27", events:[
+    {name:"[설문 마감] AI·디지털 선도학교 설문 (교사·학생 링크 안내)", allday:true}
+  ]},
   {date:"2026-11-28", events:[
-    {name:"필라테스", t0:"10:00", t1:"11:00"}
+    {name:"필라테스", t0:"10:00", t1:"11:00"},
+    {name:"[행사] 서울대 공헌 일일공학교실 11:00~17:00 (선발 학생 개별 참가)", t0:"11:00", t1:"17:00"}
   ]},
   {date:"2026-11-29", events:[
     {name:"갈라짐", allday:true},
